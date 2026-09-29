@@ -1027,30 +1027,25 @@ function Public() {
 
   useEffect(() => {
     (async () => {
-      const { data: t } = await S
-        .from('tags')
-        .select('id')
-        .eq('codigo', code)
-        .eq('ativa', true)
-        .maybeSingle();
+      const { data, error } = await S.rpc(
+        'get_public_pet_by_tag',
+        {
+          tag_code: code
+        }
+      );
 
-      if (!t) {
-        return setErr('Tag não encontrada.');
+      if (error) {
+        console.error(error);
+        return setErr('Erro ao consultar a tag.');
       }
 
-      const { data } = await S
-        .from('pets')
-        .select(
-          'nome,foto_url,raca,sexo,caracteristicas,whatsapp,cidade,status'
-        )
-        .eq('tag_id', t.id)
-        .maybeSingle();
+      const pet = data?.[0];
 
-      if (!data) {
-        setErr('Nenhum pet associado a esta tag.');
-      } else {
-        setP(data);
+      if (!pet) {
+        return setErr('Nenhum pet associado a esta tag.');
       }
+
+      setP(pet);
     })();
   }, [code]);
 

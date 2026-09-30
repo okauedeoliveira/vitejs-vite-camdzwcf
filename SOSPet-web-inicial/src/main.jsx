@@ -386,49 +386,199 @@ function Register() {
   }
 
   return (
-    <AuthLayout>
-      <div className="card">
-        <Logo />
+    <div
+      style={{
+        minHeight: '100vh',
+        width: '100%',
+        background: '#0B0B0B',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '24px',
+        boxSizing: 'border-box'
+      }}
+    >
+      <div
+        style={{
+          width: '100%',
+          maxWidth: '400px',
+          background: '#151515',
+          border: '1px solid #2A2A2A',
+          borderRadius: '22px',
+          padding: '30px 24px',
+          boxSizing: 'border-box',
+          boxShadow:
+            '0 10px 35px rgba(0, 0, 0, 0.4)'
+        }}
+      >
 
-        <h1>Criar conta</h1>
+        {/* LOGO */}
 
-        <p>Comece a proteger seus pets.</p>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: '24px'
+          }}
+        >
+          <Logo />
+        </div>
 
-        <form onSubmit={go}>
-          <label>
+        {/* TÍTULO */}
+
+        <h1
+          style={{
+            margin: '0 0 8px',
+            textAlign: 'center',
+            color: '#B8B8B8',
+            fontSize: '28px',
+            fontWeight: '700'
+          }}
+        >
+          Criar conta
+        </h1>
+
+        <p
+          style={{
+            margin: '0 0 26px',
+            textAlign: 'center',
+            color: '#777777',
+            fontSize: '14px'
+          }}
+        >
+          Comece a proteger seus pets.
+        </p>
+
+        {/* FORMULÁRIO */}
+
+        <form
+          onSubmit={go}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px'
+          }}
+        >
+
+          {/* NOME */}
+
+          <label
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '7px',
+              color: '#A0A0A0',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}
+          >
             Nome completo
+
             <input
               required
               value={name}
               onChange={e => setN(e.target.value)}
               placeholder="Seu nome"
+              style={{
+                width: '100%',
+                height: '48px',
+                padding: '0 14px',
+                boxSizing: 'border-box',
+                background: '#0B0B0B',
+                border: '1px solid #333333',
+                borderRadius: '12px',
+                color: '#FFFFFF',
+                fontSize: '15px',
+                outline: 'none'
+              }}
             />
           </label>
 
-          <label>
+          {/* TELEFONE */}
+
+          <label
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '7px',
+              color: '#A0A0A0',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}
+          >
             WhatsApp / Telefone
+
             <input
               type="tel"
               required
               value={phone}
               onChange={e => setPhone(e.target.value)}
               placeholder="(13) 99999-9999"
+              style={{
+                width: '100%',
+                height: '48px',
+                padding: '0 14px',
+                boxSizing: 'border-box',
+                background: '#0B0B0B',
+                border: '1px solid #333333',
+                borderRadius: '12px',
+                color: '#FFFFFF',
+                fontSize: '15px',
+                outline: 'none'
+              }}
             />
           </label>
 
-          <label>
+          {/* E-MAIL */}
+
+          <label
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '7px',
+              color: '#A0A0A0',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}
+          >
             E-mail
+
             <input
               type="email"
               required
               value={email}
               onChange={e => setE(e.target.value)}
               placeholder="seu@email.com"
+              style={{
+                width: '100%',
+                height: '48px',
+                padding: '0 14px',
+                boxSizing: 'border-box',
+                background: '#0B0B0B',
+                border: '1px solid #333333',
+                borderRadius: '12px',
+                color: '#FFFFFF',
+                fontSize: '15px',
+                outline: 'none'
+              }}
             />
           </label>
 
-          <label>
+          {/* SENHA */}
+
+          <label
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '7px',
+              color: '#A0A0A0',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}
+          >
             Senha
+
             <input
               type="password"
               minLength="6"
@@ -436,25 +586,95 @@ function Register() {
               value={pass}
               onChange={e => setP(e.target.value)}
               placeholder="Mínimo de 6 caracteres"
+              style={{
+                width: '100%',
+                height: '48px',
+                padding: '0 14px',
+                boxSizing: 'border-box',
+                background: '#0B0B0B',
+                border: '1px solid #333333',
+                borderRadius: '12px',
+                color: '#FFFFFF',
+                fontSize: '15px',
+                outline: 'none'
+              }}
             />
           </label>
 
-          {msg && <div className="err">{msg}</div>}
+          {/* ERRO */}
+
+          {msg && (
+            <div
+              className="err"
+              style={{
+                padding: '12px',
+                borderRadius: '10px',
+                background: '#2A1010',
+                border: '1px solid #542020',
+                color: '#FF7777',
+                fontSize: '13px',
+                lineHeight: '1.4'
+              }}
+            >
+              {msg}
+            </div>
+          )}
+
+          {/* BOTÃO */}
 
           <button
+            type="submit"
             className="primary"
             disabled={loading}
+            style={{
+              width: '100%',
+              height: '50px',
+              marginTop: '4px',
+              border: 'none',
+              borderRadius: '12px',
+              background: '#FFFFFF',
+              color: '#0B0B0B',
+              fontSize: '15px',
+              fontWeight: '700',
+              cursor: loading
+                ? 'not-allowed'
+                : 'pointer',
+              opacity: loading ? 0.6 : 1
+            }}
           >
-            {loading ? 'Criando conta...' : 'Criar conta'}
+            {loading
+              ? 'Criando conta...'
+              : 'Criar conta'}
           </button>
+
         </form>
 
-        <small>
+        {/* LOGIN */}
+
+        <div
+          style={{
+            marginTop: '24px',
+            textAlign: 'center',
+            color: '#777777',
+            fontSize: '13px'
+          }}
+        >
           Já possui conta?{' '}
-          <Link to="/login">Entrar</Link>
-        </small>
+
+          <Link
+            to="/login"
+            style={{
+              color: '#B8B8B8',
+              fontWeight: '700',
+              textDecoration: 'none'
+            }}
+          >
+            Entrar
+          </Link>
+        </div>
+
       </div>
-    </AuthLayout>
+    </div>
   );
 }
 
@@ -879,47 +1099,198 @@ function Pets() {
   }, []);
 
   return (
-    <div className="container">
-      <div className="head">
-        <div>
-          <small>ÁREA DO TUTOR</small>
+    <div
+      className="container"
+      style={{
+        minHeight: '100vh',
+        width: '100%',
+        background: '#0B0B0B',
+        color: '#FFFFFF',
+        padding: '30px 20px 120px',
+        boxSizing: 'border-box'
+      }}
+    >
 
-          <h1>Meus Pets</h1>
+      {/* CABEÇALHO */}
+
+      <div
+        className="head"
+        style={{
+          width: '100%',
+          maxWidth: '900px',
+          margin: '0 auto 28px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '20px',
+          flexWrap: 'wrap'
+        }}
+      >
+        <div>
+          <small
+            style={{
+              color: '#777777',
+              fontSize: '11px',
+              fontWeight: '700',
+              letterSpacing: '1px'
+            }}
+          >
+            ÁREA DO TUTOR
+          </small>
+
+          <h1
+            style={{
+              margin: '6px 0 0',
+              color: '#B8B8B8',
+              fontSize: '30px',
+              fontWeight: '700'
+            }}
+          >
+            Meus Pets
+          </h1>
         </div>
 
         <Link
           className="primary btn"
           to="/pets/novo"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '46px',
+            padding: '0 18px',
+            background: '#FFFFFF',
+            color: '#0B0B0B',
+            borderRadius: '12px',
+            textDecoration: 'none',
+            fontSize: '14px',
+            fontWeight: '700',
+            boxSizing: 'border-box'
+          }}
         >
           + Cadastrar pet
         </Link>
       </div>
 
+      {/* CARREGANDO */}
+
       {loading ? (
-        <p>Carregando...</p>
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '900px',
+            margin: '0 auto',
+            color: '#777777',
+            textAlign: 'center',
+            padding: '40px 0'
+          }}
+        >
+          Carregando...
+        </div>
       ) : pets.length ? (
-        <div className="grid">
+
+        /* LISTA DE PETS */
+
+        <div
+          className="grid"
+          style={{
+            width: '100%',
+            maxWidth: '900px',
+            margin: '0 auto',
+            display: 'grid',
+            gridTemplateColumns:
+              'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '16px'
+          }}
+        >
           {pets.map(p => (
             <Link
               className="pet"
               key={p.id}
               to={'/pets/' + p.id}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '16px',
+                width: '100%',
+                padding: '16px',
+                boxSizing: 'border-box',
+                background: '#151515',
+                border: '1px solid #2A2A2A',
+                borderRadius: '18px',
+                textDecoration: 'none',
+                color: '#FFFFFF',
+                transition: 'border-color 0.2s ease'
+              }}
             >
-              <div className="photo">
+
+              {/* FOTO */}
+
+              <div
+                className="photo"
+                style={{
+                  width: '82px',
+                  height: '82px',
+                  minWidth: '82px',
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  background: '#222222',
+                  border: '1px solid #333333',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
                 {p.foto_url ? (
                   <img
                     src={p.foto_url}
                     alt={p.nome}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block'
+                    }}
                   />
                 ) : (
-                  <span>🐾</span>
+                  <span
+                    style={{
+                      fontSize: '32px'
+                    }}
+                  >
+                    🐾
+                  </span>
                 )}
               </div>
 
-              <div>
-                <h3>{p.nome}</h3>
+              {/* INFORMAÇÕES */}
 
-                <p>
+              <div
+                style={{
+                  minWidth: 0,
+                  flex: 1
+                }}
+              >
+                <h3
+                  style={{
+                    margin: '0 0 5px',
+                    color: '#B8B8B8',
+                    fontSize: '20px',
+                    fontWeight: '700',
+                    lineHeight: '1.2'
+                  }}
+                >
+                  {p.nome}
+                </h3>
+
+                <p
+                  style={{
+                    margin: '0 0 9px',
+                    color: '#777777',
+                    fontSize: '13px',
+                    lineHeight: '1.4'
+                  }}
+                >
                   {p.raca ||
                     'Raça não informada'}{' '}
                   · {p.sexo || ''}
@@ -929,34 +1300,105 @@ function Pets() {
                   className={
                     p.status === 'Perdido'
                       ? 'lost'
-                      : p.status ===
-                        'Encontrado'
+                      : p.status === 'Encontrado'
                       ? 'found'
                       : ''
                   }
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    padding: '5px 9px',
+                    borderRadius: '8px',
+                    background:
+                      p.status === 'Perdido'
+                        ? '#3A1111'
+                        : p.status === 'Encontrado'
+                        ? '#102A18'
+                        : '#222222',
+                    border:
+                      p.status === 'Perdido'
+                        ? '1px solid #6B2020'
+                        : p.status === 'Encontrado'
+                        ? '1px solid #245A35'
+                        : '1px solid #333333',
+                    color:
+                      p.status === 'Perdido'
+                        ? '#FF7777'
+                        : p.status === 'Encontrado'
+                        ? '#65D98A'
+                        : '#999999',
+                    fontSize: '11px',
+                    fontWeight: '700'
+                  }}
                 >
                   {p.status}
                 </b>
               </div>
+
             </Link>
           ))}
         </div>
-      ) : (
-        <div className="empty">
-          <h2>Nenhum pet cadastrado</h2>
 
-          <p>
+      ) : (
+
+        /* NENHUM PET */
+
+        <div
+          className="empty"
+          style={{
+            width: '100%',
+            maxWidth: '500px',
+            margin: '60px auto',
+            padding: '30px 20px',
+            boxSizing: 'border-box',
+            background: '#151515',
+            border: '1px solid #2A2A2A',
+            borderRadius: '20px',
+            textAlign: 'center'
+          }}
+        >
+          <h2
+            style={{
+              margin: '0 0 10px',
+              color: '#B8B8B8',
+              fontSize: '22px'
+            }}
+          >
+            Nenhum pet cadastrado
+          </h2>
+
+          <p
+            style={{
+              margin: '0 0 22px',
+              color: '#777777',
+              fontSize: '14px'
+            }}
+          >
             Cadastre seu primeiro pet.
           </p>
 
           <Link
             className="primary btn"
             to="/pets/novo"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              minHeight: '46px',
+              padding: '0 20px',
+              background: '#FFFFFF',
+              color: '#0B0B0B',
+              borderRadius: '12px',
+              textDecoration: 'none',
+              fontSize: '14px',
+              fontWeight: '700'
+            }}
           >
             Cadastrar pet
           </Link>
         </div>
       )}
+
     </div>
   );
 }
@@ -1538,6 +1980,10 @@ function Detail() {
     useState(false);
   const [err, setErr] =
     useState('');
+  const [editingStatus, setEditingStatus] =
+    useState(false);
+  const [savingStatus, setSavingStatus] =
+    useState(false);
 
   async function loadPet() {
     setLoading(true);
@@ -1573,6 +2019,38 @@ function Detail() {
     setLoading(false);
   }
 
+  async function changeStatus(status) {
+    if (!p || savingStatus) return;
+
+    setSavingStatus(true);
+    setErr('');
+
+    const {
+      data,
+      error
+    } = await S
+      .from('pets')
+      .update({
+        status
+      })
+      .eq('id', p.id)
+      .select()
+      .single();
+
+    if (error) {
+      setErr(error.message);
+    } else {
+      setP(prev => ({
+        ...prev,
+        ...data
+      }));
+
+      setEditingStatus(false);
+    }
+
+    setSavingStatus(false);
+  }
+
   useEffect(() => {
     loadPet();
   }, [id]);
@@ -1585,7 +2063,7 @@ function Detail() {
     );
   }
 
-  if (err) {
+  if (err && !p) {
     return (
       <div className="container">
         <Link to="/pets">
@@ -1660,33 +2138,124 @@ function Detail() {
           · {p.sexo}
         </p>
 
-        <b
-          className={
-            p.status === 'Perdido'
-              ? 'lost'
-              : p.status ===
-                'Encontrado'
-              ? 'found'
-              : ''
-          }
+        <div
+          style={{
+            position: 'relative',
+            display: 'inline-block'
+          }}
         >
-          {p.status}
-        </b>
+          <b
+            onClick={() =>
+              setEditingStatus(!editingStatus)
+            }
+            style={{
+              display: 'inline-block',
+              cursor: 'pointer',
+              background: '#FFFFFF',
+              color:
+                p.status === 'Perdido'
+                  ? '#C22'
+                  : '#18703C',
+              padding: '6px 9px',
+              borderRadius: '99px',
+              fontSize: '11px',
+              fontWeight: '700',
+              border: '1px solid #E5E5E5'
+            }}
+            title="Clique para alterar o status"
+          >
+            {p.status === 'Perdido'
+              ? 'Perdido'
+              : 'Normal'}
+          </b>
+
+          {editingStatus && (
+            <div
+              style={{
+                position: 'absolute',
+                top: 'calc(100% + 5px)',
+                left: '0',
+                zIndex: 1000,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '4px',
+                minWidth: '90px',
+                padding: '5px',
+                background: '#151515',
+                border: '1px solid #2A2A2A',
+                borderRadius: '10px',
+                boxShadow:
+                  '0 8px 20px rgba(0, 0, 0, 0.45)'
+              }}
+            >
+              <button
+                type="button"
+                disabled={savingStatus}
+                onClick={() =>
+                  changeStatus('Normal')
+                }
+                style={{
+                  width: '100%',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '7px 10px',
+                  borderRadius: '7px',
+                  fontSize: '11px',
+                  fontWeight: '700',
+                  background: '#FFFFFF',
+                  color: '#18703C',
+                  textAlign: 'left'
+                }}
+              >
+                Normal
+              </button>
+
+              <button
+                type="button"
+                disabled={savingStatus}
+                onClick={() =>
+                  changeStatus('Perdido')
+                }
+                style={{
+                  width: '100%',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '7px 10px',
+                  borderRadius: '7px',
+                  fontSize: '11px',
+                  fontWeight: '700',
+                  background: '#FFFFFF',
+                  color: '#C22',
+                  textAlign: 'left'
+                }}
+              >
+                Perdido
+              </button>
+            </div>
+          )}
+        </div>
+
+        {err && (
+          <div
+            className="err"
+            style={{
+              marginTop: '15px'
+            }}
+          >
+            {err}
+          </div>
+        )}
 
         {p.caracteristicas && (
           <div className="info">
             <b>Observações</b>
-
-            <p>
-              {p.caracteristicas}
-            </p>
+            <p>{p.caracteristicas}</p>
           </div>
         )}
 
         {p.whatsapp && (
           <div className="info">
             <b>WhatsApp</b>
-
             <p>{p.whatsapp}</p>
           </div>
         )}
@@ -1694,7 +2263,6 @@ function Detail() {
         {p.cidade && (
           <div className="info">
             <b>Cidade</b>
-
             <p>{p.cidade}</p>
           </div>
         )}
@@ -1702,7 +2270,6 @@ function Detail() {
         {p.tag_codigo && (
           <div className="info">
             <b>Tag</b>
-
             <p>{p.tag_codigo}</p>
           </div>
         )}
@@ -2008,14 +2575,9 @@ function Public() {
     })();
   }, [code]);
 
-  /* =====================
-     ERRO
-  ===================== */
-
   if (err) {
     return (
       <div
-        className="public"
         style={{
           minHeight: '100vh',
           width: '100%',
@@ -2029,7 +2591,6 @@ function Public() {
         }}
       >
         <div
-          className="public-card"
           style={{
             width: '100%',
             maxWidth: '420px',
@@ -2039,7 +2600,9 @@ function Public() {
             padding: '28px 22px',
             boxSizing: 'border-box',
             textAlign: 'center',
-            color: '#FFFFFF'
+            color: '#FFFFFF',
+            boxShadow:
+              '0 10px 35px rgba(0, 0, 0, 0.35)'
           }}
         >
           <Logo />
@@ -2065,14 +2628,9 @@ function Public() {
     );
   }
 
-  /* =====================
-     CARREGANDO
-  ===================== */
-
   if (!p) {
     return (
       <div
-        className="public"
         style={{
           minHeight: '100vh',
           width: '100%',
@@ -2090,18 +2648,8 @@ function Public() {
     );
   }
 
-  /* =====================
-     PÁGINA PÚBLICA DO PET
-  ===================== */
-
   return (
     <div
-      className={
-        'public ' +
-        (p.status === 'Perdido'
-          ? 'lost-bg'
-          : '')
-      }
       style={{
         minHeight: '100vh',
         width: '100%',
@@ -2115,7 +2663,6 @@ function Public() {
       }}
     >
       <div
-        className="public-card"
         style={{
           width: '100%',
           maxWidth: '420px',
@@ -2130,18 +2677,10 @@ function Public() {
             '0 10px 35px rgba(0, 0, 0, 0.35)'
         }}
       >
-
-        {/* LOGO */}
-
         <Logo />
-
-        {/* =====================
-            STATUS PERDIDO
-        ===================== */}
 
         {p.status === 'Perdido' && (
           <div
-            className="alert"
             style={{
               marginTop: '20px',
               marginBottom: '20px',
@@ -2171,34 +2710,7 @@ function Public() {
           </div>
         )}
 
-        {/* =====================
-            STATUS ENCONTRADO
-        ===================== */}
-
-        {p.status === 'Encontrado' && (
-          <div
-            className="found"
-            style={{
-              marginTop: '20px',
-              marginBottom: '20px',
-              padding: '12px',
-              borderRadius: '14px',
-              background: '#102A18',
-              border: '1px solid #245A35',
-              color: '#65D98A',
-              fontWeight: '700'
-            }}
-          >
-            ✓ Pet encontrado
-          </div>
-        )}
-
-        {/* =====================
-            FOTO
-        ===================== */}
-
         <div
-          className="photo public-photo"
           style={{
             width: '150px',
             height: '150px',
@@ -2234,10 +2746,6 @@ function Public() {
           )}
         </div>
 
-        {/* =====================
-            NOME DO PET
-        ===================== */}
-
         <h1
           style={{
             margin: '10px 0 5px',
@@ -2248,10 +2756,6 @@ function Public() {
         >
           {p.nome}
         </h1>
-
-        {/* =====================
-            RAÇA / SEXO
-        ===================== */}
 
         <p
           style={{
@@ -2265,13 +2769,8 @@ function Public() {
           · {p.sexo}
         </p>
 
-        {/* =====================
-            CARACTERÍSTICAS
-        ===================== */}
-
         {p.caracteristicas && (
           <div
-            className="info"
             style={{
               textAlign: 'left',
               background: '#101010',
@@ -2303,13 +2802,8 @@ function Public() {
           </div>
         )}
 
-        {/* =====================
-            CIDADE
-        ===================== */}
-
         {p.cidade && (
           <div
-            className="info"
             style={{
               textAlign: 'left',
               background: '#101010',
@@ -2340,77 +2834,67 @@ function Public() {
           </div>
         )}
 
-        {/* =====================
-            BOTÕES DE CONTATO
-        ===================== */}
+        {p.whatsapp && (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px',
+              marginTop: '20px'
+            }}
+          >
+            <a
+              href={
+                'https://wa.me/55' +
+                p.whatsapp.replace(
+                  /\D/g,
+                  ''
+                )
+              }
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '48px',
+                borderRadius: '12px',
+                background: '#25D366',
+                color: '#FFFFFF',
+                textDecoration: 'none',
+                fontWeight: '700',
+                fontSize: '15px'
+              }}
+            >
+              💬 WhatsApp
+            </a>
 
-        <div
-          className="actions"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '10px',
-            marginTop: '20px'
-          }}
-        >
-          {p.whatsapp && (
-            <>
-              <a
-                className="wa"
-                href={
-                  'https://wa.me/55' +
-                  p.whatsapp.replace(
-                    /\D/g,
-                    ''
-                  )
-                }
-                target="_blank"
-                rel="noreferrer"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  minHeight: '48px',
-                  borderRadius: '12px',
-                  background: '#25D366',
-                  color: '#FFFFFF',
-                  textDecoration: 'none',
-                  fontWeight: '700',
-                  fontSize: '15px'
-                }}
-              >
-                💬 WhatsApp
-              </a>
-
-              <a
-                className="call"
-                href={
-                  'tel:' +
-                  p.whatsapp.replace(
-                    /\D/g,
-                    ''
-                  )
-                }
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  minHeight: '48px',
-                  borderRadius: '12px',
-                  background: '#222222',
-                  border: '1px solid #333333',
-                  color: '#B8B8B8',
-                  textDecoration: 'none',
-                  fontWeight: '700',
-                  fontSize: '15px'
-                }}
-              >
-                📞 Ligar
-              </a>
-            </>
-          )}
-        </div>
-
+            <a
+              href={
+                'tel:' +
+                p.whatsapp.replace(
+                  /\D/g,
+                  ''
+                )
+              }
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '48px',
+                borderRadius: '12px',
+                background: '#222222',
+                border: '1px solid #333333',
+                color: '#B8B8B8',
+                textDecoration: 'none',
+                fontWeight: '700',
+                fontSize: '15px'
+              }}
+            >
+              📞 Ligar
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );

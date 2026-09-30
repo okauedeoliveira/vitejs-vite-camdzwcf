@@ -2473,41 +2473,126 @@ function App() {
           INÍCIO
       ===================== */}
 
-      <Route
-        path="/"
-        element={
-          session ? (
-            <Navigate to="/pets" />
-          ) : (
-            <div className="landing">
-              <Logo />
+<Route
+  path="/"
+  element={
+    session ? (
+      <Navigate to="/pets" />
+    ) : (
+      <div
+        className="landing"
+        style={{
+          minHeight: '100vh',
+          width: '100%',
+          background: '#0B0B0B',
+          color: '#FFFFFF',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '30px 20px',
+          boxSizing: 'border-box',
+          textAlign: 'center'
+        }}
+      >
+        {/* LOGO */}
 
-              <h1>
-                Tecnologia a favor da vida.
-              </h1>
+        <div
+          style={{
+            marginBottom: '25px'
+          }}
+        >
+          <Logo />
+        </div>
 
-              <p>
-                Identificação inteligente para
-                ajudar seu pet a voltar para casa.
-              </p>
+        {/* TÍTULO */}
 
-              <Link
-                className="primary btn"
-                to="/login"
-              >
-                Entrar
-              </Link>
+        <h1
+          style={{
+            margin: '0 0 12px',
+            color: '#B8B8B8',
+            fontSize: '30px',
+            lineHeight: '1.2',
+            fontWeight: '700',
+            maxWidth: '400px'
+          }}
+        >
+          Tecnologia a favor da vida.
+        </h1>
 
-              <Link
-                className="secondary btn"
-                to="/cadastro"
-              >
-                Criar conta
-              </Link>
-            </div>
-          )
-        }
-      />
+        {/* DESCRIÇÃO */}
+
+        <p
+          style={{
+            margin: '0 0 30px',
+            color: '#777777',
+            fontSize: '15px',
+            lineHeight: '1.5',
+            maxWidth: '360px'
+          }}
+        >
+          Identificação inteligente para
+          ajudar seu pet a voltar para casa.
+        </p>
+
+        {/* BOTÕES */}
+
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '360px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px'
+          }}
+        >
+          <Link
+            className="primary btn"
+            to="/login"
+            style={{
+              width: '100%',
+              minHeight: '50px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxSizing: 'border-box',
+              borderRadius: '12px',
+              background: '#FFFFFF',
+              color: '#0B0B0B',
+              textDecoration: 'none',
+              fontSize: '15px',
+              fontWeight: '700'
+            }}
+          >
+            Entrar
+          </Link>
+
+          <Link
+            className="secondary btn"
+            to="/cadastro"
+            style={{
+              width: '100%',
+              minHeight: '50px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxSizing: 'border-box',
+              borderRadius: '12px',
+              background: '#151515',
+              border: '1px solid #333333',
+              color: '#B8B8B8',
+              textDecoration: 'none',
+              fontSize: '15px',
+              fontWeight: '700'
+            }}
+          >
+            Criar conta
+          </Link>
+        </div>
+      </div>
+    )
+  }
+/>
 
       {/* =====================
           LOGIN

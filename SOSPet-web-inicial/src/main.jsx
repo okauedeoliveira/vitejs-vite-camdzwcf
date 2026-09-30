@@ -685,84 +685,14 @@ function Register() {
 function ConfirmEmail() {
   const nav = useNavigate();
 
-  const params = new URLSearchParams(
-    window.location.search
-  );
-
+  const params = new URLSearchParams(window.location.search);
   const email = params.get('email') || '';
-
-  const [digits, setDigits] = useState([
-    '',
-    '',
-    '',
-    '',
-    '',
-    ''
-  ]);
 
   const [err, setErr] = useState('');
   const [msg, setMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
-
-  const refs = [
-    useRef(),
-    useRef(),
-    useRef(),
-    useRef(),
-    useRef(),
-    useRef()
-  ];
-
-  const token = digits.join('');
-
-  function changeDigit(value, index) {
-    const number = value.replace(/\D/g, '');
-
-    if (!number) {
-      const copy = [...digits];
-      copy[index] = '';
-      setDigits(copy);
-      return;
-    }
-
-    const copy = [...digits];
-
-    copy[index] = number
-      .slice(-1);
-
-    setDigits(copy);
-
-    if (index < 5) {
-      refs[index + 1].current.focus();
-    }
-  }
-
-
-  function keyDown(e, index) {
-
-    if (
-      e.key === 'Backspace'
-    ) {
-
-      const copy = [...digits];
-
-      if (digits[index]) {
-
-        copy[index] = '';
-
-        setDigits(copy);
-
-      } else if (index > 0) {
-
-        refs[index - 1]
-          .current
-          .focus();
-
-      }
-    }
-  }
-
+  const [token, setToken] = useState('');
 
   async function verify(e) {
     e.preventDefault();
@@ -770,311 +700,280 @@ function ConfirmEmail() {
     setErr('');
     setMsg('');
 
-    if (token.length !== 6) {
+    if (!S) {
+      setErr('Configure o Supabase primeiro.');
+      return;
+    }
 
-      setErr(
-        'Digite o código completo de 6 dígitos.'
-      );
+    if (!email) {
+      setErr('E-mail não encontrado.');
+      return;
+    }
 
+    if (!token.trim()) {
+      setErr('Digite o código recebido por e-mail.');
       return;
     }
 
     setLoading(true);
 
-
-    const {
-      data,
-      error
-    } = await S.auth.verifyOtp({
-
+    const { data, error } = await S.auth.verifyOtp({
       email,
-
-      token,
-
+      token: token.trim(),
       type: 'email'
-
     });
 
-
     if (error) {
-
-      setErr(
-        'Código inválido ou expirado.'
-      );
-
+      console.error(error);
+      setErr(error.message || 'Código inválido ou expirado.');
       setLoading(false);
-
       return;
-
     }
 
-
-    if (data.user) {
-
-      const nome =
-        data.user.user_metadata?.nome || '';
-
-      const telefone =
-        data.user.user_metadata?.telefone || '';
-
+    if (data?.user) {
+      const nome = data.user.user_metadata?.nome || '';
+      const telefone = data.user.user_metadata?.telefone || '';
 
       await S
         .from('profiles')
         .update({
-
           nome,
-
           telefone
-
         })
-        .eq(
-          'id',
-          data.user.id
-        );
-
+        .eq('id', data.user.id);
     }
 
-
     setLoading(false);
-
     nav('/pets');
-
   }
 
-
   async function resend() {
-
     setErr('');
     setMsg('');
 
+    if (!S) {
+      setErr('Configure o Supabase primeiro.');
+      return;
+    }
+
+    if (!email) {
+      setErr('E-mail não encontrado.');
+      return;
+    }
+
     setResending(true);
 
-
-    const {
-      error
-    } = await S.auth.resend({
-
-      type:'signup',
-
+    const { error } = await S.auth.resend({
+      type: 'signup',
       email
-
     });
-
 
     setResending(false);
 
-
-    if(error){
-
-      setErr(
-        error.message
-      );
-
+    if (error) {
+      console.error(error);
+      setErr(error.message);
       return;
-
     }
 
-
-    setMsg(
-      'Novo código enviado.'
-    );
-
+    setMsg('Novo código enviado.');
   }
 
-
   return (
-
     <div
       style={{
-        minHeight:'100vh',
-        background:'#0B0B0B',
-        display:'flex',
-        justifyContent:'center',
-        alignItems:'center',
-        padding:'24px'
+        minHeight: '100vh',
+        width: '100%',
+        background: '#0B0B0B',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '24px',
+        boxSizing: 'border-box'
       }}
     >
-
       <div
         style={{
-          width:'100%',
-          maxWidth:'400px',
-          background:'#151515',
-          border:'1px solid #2A2A2A',
-          borderRadius:'22px',
-          padding:'30px 24px',
-          textAlign:'center'
+          width: '100%',
+          maxWidth: '400px',
+          background: '#151515',
+          border: '1px solid #2A2A2A',
+          borderRadius: '22px',
+          padding: '30px 24px',
+          boxSizing: 'border-box',
+          textAlign: 'center',
+          boxShadow: '0 10px 35px rgba(0, 0, 0, 0.4)'
         }}
       >
-
-        <Logo />
-
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: '24px'
+          }}
+        >
+          <Logo />
+        </div>
 
         <h1
           style={{
-            color:'#B8B8B8'
+            margin: '0 0 10px',
+            color: '#B8B8B8',
+            fontSize: '28px',
+            fontWeight: '700'
           }}
         >
           Confirme seu e-mail
         </h1>
 
-
         <p
           style={{
-            color:'#777'
+            margin: '0 0 8px',
+            color: '#777777',
+            fontSize: '14px'
           }}
         >
           Digite o código enviado para:
         </p>
 
-
         <strong
           style={{
-            color:'#FFF'
+            display: 'block',
+            color: '#FFFFFF',
+            fontSize: '14px',
+            wordBreak: 'break-word'
           }}
         >
           {email}
         </strong>
 
-
-        <form
-          onSubmit={verify}
-        >
-
-
-          <div
+        <form onSubmit={verify}>
+          <input
+            type="text"
+            inputMode="numeric"
+            value={token}
+            onChange={e =>
+              setToken(
+                e.target.value
+                  .replace(/\D/g, '')
+                  .slice(0, 6)
+              )
+            }
+            placeholder="Código de confirmação"
             style={{
-              display:'flex',
-              justifyContent:'center',
-              gap:'8px',
-              margin:'25px 0'
+              width: '100%',
+              height: '52px',
+              marginTop: '28px',
+              padding: '0 14px',
+              boxSizing: 'border-box',
+              borderRadius: '12px',
+              border: '1px solid #333333',
+              background: '#0B0B0B',
+              color: '#FFFFFF',
+              textAlign: 'center',
+              fontSize: '20px',
+              fontWeight: '700',
+              outline: 'none'
             }}
-          >
-
-            {digits.map(
-              (digit,index)=>(
-
-              <input
-
-                key={index}
-
-                ref={refs[index]}
-
-                type="text"
-
-                inputMode="numeric"
-
-                autoComplete="one-time-code"
-
-                maxLength="1"
-
-                value={digit}
-
-                onChange={e =>
-                  changeDigit(
-                    e.target.value,
-                    index
-                  )
-                }
-
-                onKeyDown={e =>
-                  keyDown(
-                    e,
-                    index
-                  )
-                }
-
-                style={{
-                  width:'42px',
-                  height:'50px',
-                  borderRadius:'12px',
-                  border:'1px solid #333',
-                  background:'#0B0B0B',
-                  color:'#FFF',
-                  textAlign:'center',
-                  fontSize:'22px',
-                  fontWeight:'700',
-                  outline:'none'
-                }}
-
-              />
-
-            ))}
-
-          </div>
-
+          />
 
           {err && (
-
             <div
-              className="err"
+              style={{
+                padding: '12px',
+                marginTop: '12px',
+                borderRadius: '10px',
+                background: '#2A1010',
+                border: '1px solid #542020',
+                color: '#FF7777',
+                fontSize: '13px',
+                lineHeight: '1.4'
+              }}
             >
               {err}
             </div>
-
           )}
 
-
           {msg && (
-
             <div
               style={{
-                color:'#65D98A',
-                marginBottom:'10px'
+                padding: '10px',
+                marginTop: '12px',
+                color: '#65D98A',
+                fontSize: '13px'
               }}
             >
               {msg}
             </div>
-
           )}
 
-
           <button
-            className="primary"
+            type="submit"
             disabled={loading}
             style={{
-              width:'100%',
-              height:'50px',
-              marginTop:'15px',
-              borderRadius:'12px',
-              background:'#FFF',
-              color:'#0B0B0B'
+              width: '100%',
+              height: '50px',
+              marginTop: '15px',
+              border: 'none',
+              borderRadius: '12px',
+              background: '#FFFFFF',
+              color: '#0B0B0B',
+              fontSize: '15px',
+              fontWeight: '700',
+              cursor: loading
+                ? 'not-allowed'
+                : 'pointer',
+              opacity: loading ? 0.6 : 1
             }}
           >
-
             {loading
               ? 'Confirmando...'
-              : 'Confirmar'}
-
+              : 'Confirmar e-mail'}
           </button>
-
-
         </form>
 
-
         <button
+          type="button"
           onClick={resend}
           disabled={resending}
           style={{
-            marginTop:'20px',
-            background:'none',
-            border:'none',
-            color:'#B8B8B8',
-            cursor:'pointer'
+            marginTop: '20px',
+            padding: '8px',
+            background: 'none',
+            border: 'none',
+            color: '#B8B8B8',
+            fontSize: '13px',
+            cursor: resending
+              ? 'not-allowed'
+              : 'pointer',
+            opacity: resending ? 0.6 : 1
           }}
         >
-
           {resending
             ? 'Enviando...'
             : 'Reenviar código'}
-
         </button>
 
-
+        <div
+          style={{
+            marginTop: '18px',
+            color: '#777777',
+            fontSize: '12px'
+          }}
+        >
+          E-mail incorreto?{' '}
+          <Link
+            to="/cadastro"
+            style={{
+              color: '#B8B8B8',
+              fontWeight: '700'
+            }}
+          >
+            Voltar ao cadastro
+          </Link>
+        </div>
       </div>
-
     </div>
-
   );
 }
 

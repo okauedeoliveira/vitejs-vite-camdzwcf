@@ -5,6 +5,7 @@ import {
   Routes,
   Route,
   Link,
+  NavLink,
   Navigate,
   useNavigate,
   useParams
@@ -21,11 +22,33 @@ const S = U && K ? createClient(U, K) : null;
 ========================= */
 
 const Logo = () => (
-  <Link className="logo" to="/">
-    <b>🐾</b>
-    <span>
-      SOS<span>Pet</span>
-    </span>
+  <Link
+    to="/"
+    className="logo"
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      textDecoration: 'none',
+      width: 'auto',
+      height: '100%',
+      margin: '0',
+      flexShrink: 0,
+      overflow: 'hidden'
+    }}
+  >
+    <img
+      src="/images/logo-sospet.png"
+      alt=""
+      style={{
+        display: 'block',
+        height: '70px',
+        width: 'auto',
+        maxWidth: '180px',
+        objectFit: 'contain',
+        objectPosition: 'center'
+      }}
+    />
   </Link>
 );
 
@@ -38,7 +61,9 @@ function AuthLayout({ children }) {
     <div className="auth">
       <div className="auth-side">
         <Logo />
+
         <h2>Tecnologia a favor da vida.</h2>
+
         <p>
           Identificação inteligente para ajudar seu pet a voltar para casa.
         </p>
@@ -52,9 +77,9 @@ function AuthLayout({ children }) {
 /* =========================
    LOGIN
 ========================= */
-
 function Login() {
   const nav = useNavigate();
+
   const [email, setE] = useState('');
   const [pass, setP] = useState('');
   const [err, setErr] = useState('');
@@ -87,47 +112,221 @@ function Login() {
   }
 
   return (
-    <AuthLayout>
-      <div className="card">
-        <Logo />
+    <div
+      style={{
+        minHeight: '100vh',
+        width: '100%',
+        background: '#0B0B0B',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '24px',
+        boxSizing: 'border-box'
+      }}
+    >
+      <div
+        style={{
+          width: '100%',
+          maxWidth: '400px',
+          background: '#151515',
+          border: '1px solid #2A2A2A',
+          borderRadius: '22px',
+          padding: '30px 24px',
+          boxSizing: 'border-box',
+          boxShadow:
+            '0 10px 35px rgba(0, 0, 0, 0.4)'
+        }}
+      >
 
-        <h1>Entrar</h1>
+        {/* LOGO */}
 
-        <p>Acesse sua conta SOSPet.</p>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: '24px'
+          }}
+        >
+          <Logo />
+        </div>
 
-        <form onSubmit={go}>
-          <label>
+        {/* TÍTULO */}
+
+        <h1
+          style={{
+            margin: '0 0 8px',
+            textAlign: 'center',
+            color: '#B8B8B8',
+            fontSize: '28px',
+            fontWeight: '700'
+          }}
+        >
+          Entrar
+        </h1>
+
+        <p
+          style={{
+            margin: '0 0 26px',
+            textAlign: 'center',
+            color: '#777777',
+            fontSize: '14px'
+          }}
+        >
+          Acesse sua conta SOSPet.
+        </p>
+
+        {/* FORMULÁRIO */}
+
+        <form
+          onSubmit={go}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px'
+          }}
+        >
+
+          {/* E-MAIL */}
+
+          <label
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '7px',
+              color: '#A0A0A0',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}
+          >
             E-mail
+
             <input
               type="email"
               required
               value={email}
               onChange={e => setE(e.target.value)}
+              style={{
+                width: '100%',
+                height: '48px',
+                padding: '0 14px',
+                boxSizing: 'border-box',
+                background: '#0B0B0B',
+                border: '1px solid #333333',
+                borderRadius: '12px',
+                color: '#FFFFFF',
+                fontSize: '15px',
+                outline: 'none'
+              }}
             />
           </label>
 
-          <label>
+          {/* SENHA */}
+
+          <label
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '7px',
+              color: '#A0A0A0',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}
+          >
             Senha
+
             <input
               type="password"
               required
               value={pass}
               onChange={e => setP(e.target.value)}
+              style={{
+                width: '100%',
+                height: '48px',
+                padding: '0 14px',
+                boxSizing: 'border-box',
+                background: '#0B0B0B',
+                border: '1px solid #333333',
+                borderRadius: '12px',
+                color: '#FFFFFF',
+                fontSize: '15px',
+                outline: 'none'
+              }}
             />
           </label>
 
-          {err && <div className="err">{err}</div>}
+          {/* ERRO */}
 
-          <button className="primary">
+          {err && (
+            <div
+              className="err"
+              style={{
+                padding: '12px',
+                borderRadius: '10px',
+                background: '#2A1010',
+                border: '1px solid #542020',
+                color: '#FF7777',
+                fontSize: '13px',
+                lineHeight: '1.4'
+              }}
+            >
+              {err}
+            </div>
+          )}
+
+          {/* BOTÃO */}
+
+          <button
+            type="submit"
+            className="primary"
+            disabled={load}
+            style={{
+              width: '100%',
+              height: '50px',
+              marginTop: '4px',
+              border: 'none',
+              borderRadius: '12px',
+              background: '#FFFFFF',
+              color: '#0B0B0B',
+              fontSize: '15px',
+              fontWeight: '700',
+              cursor: load
+                ? 'not-allowed'
+                : 'pointer',
+              opacity: load ? 0.6 : 1
+            }}
+          >
             {load ? 'Entrando...' : 'Entrar'}
           </button>
+
         </form>
 
-        <small>
-          Não tem conta? <Link to="/cadastro">Criar conta</Link>
-        </small>
+        {/* CADASTRO */}
+
+        <div
+          style={{
+            marginTop: '24px',
+            textAlign: 'center',
+            color: '#777777',
+            fontSize: '13px'
+          }}
+        >
+          Não tem conta?{' '}
+
+          <Link
+            to="/cadastro"
+            style={{
+              color: '#B8B8B8',
+              fontWeight: '700',
+              textDecoration: 'none'
+            }}
+          >
+            Criar conta
+          </Link>
+        </div>
+
       </div>
-    </AuthLayout>
+    </div>
   );
 }
 
@@ -139,17 +338,22 @@ function Register() {
   const nav = useNavigate();
 
   const [name, setN] = useState('');
+  const [phone, setPhone] = useState('');
   const [email, setE] = useState('');
   const [pass, setP] = useState('');
   const [msg, setM] = useState('');
+  const [loading, setLoading] = useState(false);
 
   async function go(e) {
     e.preventDefault();
 
     setM('');
+    setLoading(true);
 
     if (!S) {
-      return setM('Configure o Supabase primeiro.');
+      setM('Configure o Supabase primeiro.');
+      setLoading(false);
+      return;
     }
 
     const { data, error } = await S.auth.signUp({
@@ -157,20 +361,28 @@ function Register() {
       password: pass,
       options: {
         data: {
-          nome: name
+          nome: name,
+          telefone: phone
         }
       }
     });
 
+    setLoading(false);
+
     if (error) {
       setM(error.message);
-    } else if (data.session) {
-      nav('/pets');
-    } else {
-      setM(
-        'Conta criada. Verifique seu e-mail se a confirmação estiver ativada.'
-      );
+      return;
     }
+
+    if (data.session) {
+      nav('/pets');
+      return;
+    }
+
+    nav(
+      '/confirmar-email?email=' +
+        encodeURIComponent(email)
+    );
   }
 
   return (
@@ -184,11 +396,23 @@ function Register() {
 
         <form onSubmit={go}>
           <label>
-            Nome
+            Nome completo
             <input
               required
               value={name}
               onChange={e => setN(e.target.value)}
+              placeholder="Seu nome"
+            />
+          </label>
+
+          <label>
+            WhatsApp / Telefone
+            <input
+              type="tel"
+              required
+              value={phone}
+              onChange={e => setPhone(e.target.value)}
+              placeholder="(13) 99999-9999"
             />
           </label>
 
@@ -199,6 +423,7 @@ function Register() {
               required
               value={email}
               onChange={e => setE(e.target.value)}
+              placeholder="seu@email.com"
             />
           </label>
 
@@ -210,16 +435,224 @@ function Register() {
               required
               value={pass}
               onChange={e => setP(e.target.value)}
+              placeholder="Mínimo de 6 caracteres"
             />
           </label>
 
           {msg && <div className="err">{msg}</div>}
 
-          <button className="primary">Criar conta</button>
+          <button
+            className="primary"
+            disabled={loading}
+          >
+            {loading ? 'Criando conta...' : 'Criar conta'}
+          </button>
         </form>
 
         <small>
-          Já possui conta? <Link to="/login">Entrar</Link>
+          Já possui conta?{' '}
+          <Link to="/login">Entrar</Link>
+        </small>
+      </div>
+    </AuthLayout>
+  );
+}
+
+/* =========================
+   CONFIRMAÇÃO DE E-MAIL
+========================= */
+
+function ConfirmEmail() {
+  const nav = useNavigate();
+
+  const params = new URLSearchParams(
+    window.location.search
+  );
+
+  const email = params.get('email') || '';
+
+  const [token, setToken] = useState('');
+  const [err, setErr] = useState('');
+  const [msg, setMsg] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
+
+  async function verify(e) {
+    e.preventDefault();
+
+    setErr('');
+    setMsg('');
+
+    if (!S) {
+      setErr('Configure o Supabase primeiro.');
+      return;
+    }
+
+    if (!email) {
+      setErr('E-mail não encontrado.');
+      return;
+    }
+
+    if (token.length !== 6) {
+      setErr('Digite o código de 6 dígitos.');
+      return;
+    }
+
+    setLoading(true);
+
+    const { data, error } = await S.auth.verifyOtp({
+      email,
+      token,
+      type: 'email'
+    });
+
+    if (error) {
+      console.error(error);
+
+      setErr(
+        'Código inválido ou expirado. Confira o código enviado para seu e-mail.'
+      );
+
+      setLoading(false);
+      return;
+    }
+
+    /*
+      Atualizamos o perfil com os dados
+      que foram enviados durante o cadastro.
+    */
+
+    if (data.user) {
+      const nome =
+        data.user.user_metadata?.nome || '';
+
+      const telefone =
+        data.user.user_metadata?.telefone || '';
+
+      await S
+        .from('profiles')
+        .update({
+          nome,
+          telefone
+        })
+        .eq('id', data.user.id);
+    }
+
+    setLoading(false);
+
+    nav('/pets');
+  }
+
+  async function resend() {
+    setErr('');
+    setMsg('');
+
+    if (!S) {
+      setErr('Configure o Supabase primeiro.');
+      return;
+    }
+
+    if (!email) {
+      setErr('E-mail não encontrado.');
+      return;
+    }
+
+    setResending(true);
+
+    const { error } = await S.auth.resend({
+      type: 'signup',
+      email
+    });
+
+    setResending(false);
+
+    if (error) {
+      setErr(error.message);
+      return;
+    }
+
+    setMsg(
+      'Novo código enviado para seu e-mail.'
+    );
+  }
+
+  return (
+    <AuthLayout>
+      <div className="card confirm-card">
+        <Logo />
+
+        <div className="confirm-icon">
+          ✉️
+        </div>
+
+        <h1>Confirme seu e-mail</h1>
+
+        <p>
+          Enviamos um código de 6 dígitos para:
+        </p>
+
+        <strong className="confirm-email">
+          {email}
+        </strong>
+
+        <form onSubmit={verify}>
+          <label>
+            Código de confirmação
+
+            <input
+              className="otp-input"
+              type="text"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              maxLength="6"
+              placeholder="000000"
+              value={token}
+              onChange={e =>
+                setToken(
+                  e.target.value.replace(/\D/g, '')
+                )
+              }
+            />
+          </label>
+
+          {err && (
+            <div className="err">
+              {err}
+            </div>
+          )}
+
+          {msg && (
+            <div className="success-message">
+              {msg}
+            </div>
+          )}
+
+          <button
+            className="primary"
+            disabled={loading}
+          >
+            {loading
+              ? 'Verificando...'
+              : 'Confirmar e-mail'}
+          </button>
+        </form>
+
+        <button
+          type="button"
+          className="link-button"
+          onClick={resend}
+          disabled={resending}
+        >
+          {resending
+            ? 'Enviando...'
+            : 'Reenviar código'}
+        </button>
+
+        <small>
+          E-mail incorreto?{' '}
+          <Link to="/cadastro">
+            Voltar ao cadastro
+          </Link>
         </small>
       </div>
     </AuthLayout>
@@ -230,24 +663,191 @@ function Register() {
    SHELL
 ========================= */
 
-function Shell({ children, onOut }) {
+function Shell({ children }) {
   return (
     <>
-      <header>
+      <header
+        className="app-header"
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+
+          padding: '15px 0 5px',
+
+          background: '#0B0B0B',
+          color: '#FFFFFF',
+
+          borderBottom: '1px solid #1F1F1F'
+        }}
+      >
         <Logo />
-
-        <nav>
-          <Link to="/pets">Meus Pets</Link>
-          <Link to="/pets/novo">Cadastrar Pet</Link>
-          <Link to="/perfil">Perfil</Link>
-
-          <button onClick={onOut}>Sair</button>
-        </nav>
       </header>
 
-      <main>{children}</main>
+      <main
+        className="app-main"
+        style={{
+          minHeight: '100vh',
 
-      <footer>SOSPet · Tecnologia a favor da vida</footer>
+          paddingBottom: '100px',
+
+          background: '#0B0B0B',
+          color: '#FFFFFF'
+        }}
+      >
+        {children}
+      </main>
+
+      <nav
+        className="bottom-nav"
+        style={{
+          position: 'fixed',
+          left: '50%',
+          bottom: '16px',
+          transform: 'translateX(-50%)',
+
+          width: 'min(75%, 380px)',
+          minHeight: '55px',
+
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+
+          padding: '5px 8px',
+
+          /* FUNDO DA NAVEGAÇÃO */
+          background: '#151515',
+
+          /* BORDA */
+          border: '1px solid #2A2A2A',
+          borderRadius: '18px',
+
+          /* SOMBRA */
+          boxShadow:
+            '0 8px 25px rgba(0, 0, 0, 0.45)',
+
+          zIndex: 9999
+        }}
+      >
+        <NavLink
+          to="/pets"
+          className={({ isActive }) =>
+            'bottom-nav-item' +
+            (isActive ? ' active' : '')
+          }
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+
+            gap: '2px',
+            padding: '5px 4px',
+
+            textDecoration: 'none',
+
+            /* COR PADRÃO */
+            color: '#A0A0A0',
+
+            borderRadius: '12px',
+
+            fontSize: '11px',
+            fontWeight: '600'
+          }}
+        >
+          <span
+            className="bottom-nav-icon"
+            style={{
+              fontSize: '19px',
+              lineHeight: '1'
+            }}
+          >
+            🐾
+          </span>
+
+          <span>Meus Pets</span>
+        </NavLink>
+
+        <NavLink
+          to="/pets/novo"
+          className={({ isActive }) =>
+            'bottom-nav-item' +
+            (isActive ? ' active' : '')
+          }
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+
+            gap: '2px',
+            padding: '5px 4px',
+
+            textDecoration: 'none',
+
+            color: '#A0A0A0',
+
+            borderRadius: '12px',
+
+            fontSize: '11px',
+            fontWeight: '600'
+          }}
+        >
+          <span
+            className="bottom-nav-icon"
+            style={{
+              fontSize: '19px',
+              lineHeight: '1'
+            }}
+          >
+            ＋
+          </span>
+
+          <span>Cadastrar Pet</span>
+        </NavLink>
+
+        <NavLink
+          to="/perfil"
+          className={({ isActive }) =>
+            'bottom-nav-item' +
+            (isActive ? ' active' : '')
+          }
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+
+            gap: '2px',
+            padding: '5px 4px',
+
+            textDecoration: 'none',
+
+            color: '#A0A0A0',
+
+            borderRadius: '12px',
+
+            fontSize: '11px',
+            fontWeight: '600'
+          }}
+        >
+          <span
+            className="bottom-nav-icon"
+            style={{
+              fontSize: '19px',
+              lineHeight: '1'
+            }}
+          >
+            👤
+          </span>
+
+          <span>Perfil</span>
+        </NavLink>
+      </nav>
     </>
   );
 }
@@ -266,7 +866,9 @@ function Pets() {
     const { data } = await S
       .from('pets')
       .select('*')
-      .order('created_at', { ascending: false });
+      .order('created_at', {
+        ascending: false
+      });
 
     setPets(data || []);
     setL(false);
@@ -281,10 +883,14 @@ function Pets() {
       <div className="head">
         <div>
           <small>ÁREA DO TUTOR</small>
+
           <h1>Meus Pets</h1>
         </div>
 
-        <Link className="primary btn" to="/pets/novo">
+        <Link
+          className="primary btn"
+          to="/pets/novo"
+        >
           + Cadastrar pet
         </Link>
       </div>
@@ -294,10 +900,17 @@ function Pets() {
       ) : pets.length ? (
         <div className="grid">
           {pets.map(p => (
-            <Link className="pet" key={p.id} to={'/pets/' + p.id}>
+            <Link
+              className="pet"
+              key={p.id}
+              to={'/pets/' + p.id}
+            >
               <div className="photo">
                 {p.foto_url ? (
-                  <img src={p.foto_url} alt={p.nome} />
+                  <img
+                    src={p.foto_url}
+                    alt={p.nome}
+                  />
                 ) : (
                   <span>🐾</span>
                 )}
@@ -307,14 +920,17 @@ function Pets() {
                 <h3>{p.nome}</h3>
 
                 <p>
-                  {p.raca || 'Raça não informada'} · {p.sexo || ''}
+                  {p.raca ||
+                    'Raça não informada'}{' '}
+                  · {p.sexo || ''}
                 </p>
 
                 <b
                   className={
                     p.status === 'Perdido'
                       ? 'lost'
-                      : p.status === 'Encontrado'
+                      : p.status ===
+                        'Encontrado'
                       ? 'found'
                       : ''
                   }
@@ -329,9 +945,14 @@ function Pets() {
         <div className="empty">
           <h2>Nenhum pet cadastrado</h2>
 
-          <p>Cadastre seu primeiro pet.</p>
+          <p>
+            Cadastre seu primeiro pet.
+          </p>
 
-          <Link className="primary btn" to="/pets/novo">
+          <Link
+            className="primary btn"
+            to="/pets/novo"
+          >
             Cadastrar pet
           </Link>
         </div>
@@ -387,7 +1008,9 @@ function NewPet() {
         .maybeSingle();
 
       if (error || !data) {
-        return setErr('Tag não encontrada.');
+        return setErr(
+          'Tag não encontrada.'
+        );
       }
 
       tag_id = data.id;
@@ -396,9 +1019,12 @@ function NewPet() {
     let foto_url = null;
 
     if (file) {
-      const ext = file.name.split('.').pop() || 'jpg';
+      const ext =
+        file.name.split('.').pop() ||
+        'jpg';
 
-      const path = `${user.id}/${crypto.randomUUID()}.${ext}`;
+      const path =
+        `${user.id}/${crypto.randomUUID()}.${ext}`;
 
       const { error } = await S.storage
         .from('pet-fotos')
@@ -412,21 +1038,25 @@ function NewPet() {
 
       foto_url = S.storage
         .from('pet-fotos')
-        .getPublicUrl(path).data.publicUrl;
+        .getPublicUrl(path)
+        .data.publicUrl;
     }
 
-    const { error } = await S.from('pets').insert({
-      tutor_id: user.id,
-      tag_id,
-      nome: f.nome,
-      foto_url,
-      raca: f.raca || null,
-      sexo: f.sexo,
-      caracteristicas: f.caracteristicas || null,
-      whatsapp: f.whatsapp || null,
-      cidade: f.cidade || null,
-      status: f.status
-    });
+    const { error } = await S
+      .from('pets')
+      .insert({
+        tutor_id: user.id,
+        tag_id,
+        nome: f.nome,
+        foto_url,
+        raca: f.raca || null,
+        sexo: f.sexo,
+        caracteristicas:
+          f.caracteristicas || null,
+        whatsapp: f.whatsapp || null,
+        cidade: f.cidade || null,
+        status: f.status
+      });
 
     if (error) {
       setErr(error.message);
@@ -437,17 +1067,24 @@ function NewPet() {
 
   return (
     <div className="container narrow">
-      <Link to="/pets">← Voltar</Link>
+      <Link to="/pets">
+        ← Voltar
+      </Link>
 
       <h1>Cadastrar Pet</h1>
 
-      <form className="form" onSubmit={go}>
+      <form
+        className="form"
+        onSubmit={go}
+      >
         <label>
           Nome *
           <input
             required
             value={f.nome}
-            onChange={e => set('nome', e.target.value)}
+            onChange={e =>
+              set('nome', e.target.value)
+            }
           />
         </label>
 
@@ -456,7 +1093,9 @@ function NewPet() {
             Raça
             <input
               value={f.raca}
-              onChange={e => set('raca', e.target.value)}
+              onChange={e =>
+                set('raca', e.target.value)
+              }
             />
           </label>
 
@@ -464,7 +1103,9 @@ function NewPet() {
             Sexo
             <select
               value={f.sexo}
-              onChange={e => set('sexo', e.target.value)}
+              onChange={e =>
+                set('sexo', e.target.value)
+              }
             >
               <option>Macho</option>
               <option>Fêmea</option>
@@ -476,7 +1117,12 @@ function NewPet() {
           Características
           <textarea
             value={f.caracteristicas}
-            onChange={e => set('caracteristicas', e.target.value)}
+            onChange={e =>
+              set(
+                'caracteristicas',
+                e.target.value
+              )
+            }
           />
         </label>
 
@@ -485,7 +1131,12 @@ function NewPet() {
             WhatsApp
             <input
               value={f.whatsapp}
-              onChange={e => set('whatsapp', e.target.value)}
+              onChange={e =>
+                set(
+                  'whatsapp',
+                  e.target.value
+                )
+              }
             />
           </label>
 
@@ -493,7 +1144,12 @@ function NewPet() {
             Cidade
             <input
               value={f.cidade}
-              onChange={e => set('cidade', e.target.value)}
+              onChange={e =>
+                set(
+                  'cidade',
+                  e.target.value
+                )
+              }
             />
           </label>
         </div>
@@ -503,7 +1159,12 @@ function NewPet() {
             Status
             <select
               value={f.status}
-              onChange={e => set('status', e.target.value)}
+              onChange={e =>
+                set(
+                  'status',
+                  e.target.value
+                )
+              }
             >
               <option>Normal</option>
               <option>Perdido</option>
@@ -516,7 +1177,9 @@ function NewPet() {
             <input
               placeholder="RF-00001"
               value={f.tag}
-              onChange={e => set('tag', e.target.value)}
+              onChange={e =>
+                set('tag', e.target.value)
+              }
             />
           </label>
         </div>
@@ -526,13 +1189,23 @@ function NewPet() {
           <input
             type="file"
             accept="image/*"
-            onChange={e => setFile(e.target.files?.[0])}
+            onChange={e =>
+              setFile(
+                e.target.files?.[0]
+              )
+            }
           />
         </label>
 
-        {err && <div className="err">{err}</div>}
+        {err && (
+          <div className="err">
+            {err}
+          </div>
+        )}
 
-        <button className="primary">Salvar pet</button>
+        <button className="primary">
+          Salvar pet
+        </button>
       </form>
     </div>
   );
@@ -542,12 +1215,17 @@ function NewPet() {
    EDITAR PET
 ========================= */
 
-function EditPet({ pet, onCancel, onSaved }) {
+function EditPet({
+  pet,
+  onCancel,
+  onSaved
+}) {
   const [f, setF] = useState({
     nome: pet.nome || '',
     raca: pet.raca || '',
     sexo: pet.sexo || 'Macho',
-    caracteristicas: pet.caracteristicas || '',
+    caracteristicas:
+      pet.caracteristicas || '',
     whatsapp: pet.whatsapp || '',
     cidade: pet.cidade || '',
     status: pet.status || 'Normal',
@@ -556,7 +1234,8 @@ function EditPet({ pet, onCancel, onSaved }) {
 
   const [file, setFile] = useState();
   const [err, setErr] = useState('');
-  const [saving, setSaving] = useState(false);
+  const [saving, setSaving] =
+    useState(false);
 
   const set = (k, v) =>
     setF(x => ({
@@ -571,23 +1250,24 @@ function EditPet({ pet, onCancel, onSaved }) {
     setErr('');
 
     try {
-      let foto_url = pet.foto_url || null;
-
-      /*
-        Se uma nova foto foi escolhida,
-        fazemos o upload para a pasta do tutor.
-      */
+      let foto_url =
+        pet.foto_url || null;
 
       if (file) {
         const {
           data: { user }
         } = await S.auth.getUser();
 
-        const ext = file.name.split('.').pop() || 'jpg';
+        const ext =
+          file.name.split('.').pop() ||
+          'jpg';
 
-        const path = `${user.id}/${crypto.randomUUID()}.${ext}`;
+        const path =
+          `${user.id}/${crypto.randomUUID()}.${ext}`;
 
-        const { error: uploadError } = await S.storage
+        const {
+          error: uploadError
+        } = await S.storage
           .from('pet-fotos')
           .upload(path, file, {
             contentType: file.type
@@ -599,17 +1279,17 @@ function EditPet({ pet, onCancel, onSaved }) {
 
         foto_url = S.storage
           .from('pet-fotos')
-          .getPublicUrl(path).data.publicUrl;
+          .getPublicUrl(path)
+          .data.publicUrl;
       }
-
-      /*
-        Procuramos a tag pelo código.
-      */
 
       let tag_id = null;
 
       if (f.tag.trim()) {
-        const { data: tagData, error: tagError } = await S
+        const {
+          data: tagData,
+          error: tagError
+        } = await S
           .from('tags')
           .select('id')
           .eq('codigo', f.tag.trim())
@@ -621,26 +1301,30 @@ function EditPet({ pet, onCancel, onSaved }) {
         }
 
         if (!tagData) {
-          throw new Error('Tag não encontrada.');
+          throw new Error(
+            'Tag não encontrada.'
+          );
         }
 
         tag_id = tagData.id;
       }
 
-      /*
-        Atualiza o pet.
-      */
-
-      const { data, error } = await S
+      const {
+        data,
+        error
+      } = await S
         .from('pets')
         .update({
           nome: f.nome,
           foto_url,
           raca: f.raca || null,
           sexo: f.sexo,
-          caracteristicas: f.caracteristicas || null,
-          whatsapp: f.whatsapp || null,
-          cidade: f.cidade || null,
+          caracteristicas:
+            f.caracteristicas || null,
+          whatsapp:
+            f.whatsapp || null,
+          cidade:
+            f.cidade || null,
           status: f.status,
           tag_id
         })
@@ -652,9 +1336,21 @@ function EditPet({ pet, onCancel, onSaved }) {
         throw error;
       }
 
-      onSaved(data);
+      /*
+        Mantemos o novo código da tag
+        para atualizar a tela imediatamente.
+      */
+
+      onSaved({
+        ...data,
+        tag_codigo:
+          f.tag.trim() || ''
+      });
     } catch (error) {
-      setErr(error.message || 'Não foi possível salvar as alterações.');
+      setErr(
+        error.message ||
+          'Não foi possível salvar as alterações.'
+      );
     } finally {
       setSaving(false);
     }
@@ -664,13 +1360,21 @@ function EditPet({ pet, onCancel, onSaved }) {
     <div className="edit-box">
       <h2>Editar pet</h2>
 
-      <form className="form" onSubmit={save}>
+      <form
+        className="form"
+        onSubmit={save}
+      >
         <label>
           Nome *
           <input
             required
             value={f.nome}
-            onChange={e => set('nome', e.target.value)}
+            onChange={e =>
+              set(
+                'nome',
+                e.target.value
+              )
+            }
           />
         </label>
 
@@ -679,7 +1383,12 @@ function EditPet({ pet, onCancel, onSaved }) {
             Raça
             <input
               value={f.raca}
-              onChange={e => set('raca', e.target.value)}
+              onChange={e =>
+                set(
+                  'raca',
+                  e.target.value
+                )
+              }
             />
           </label>
 
@@ -687,7 +1396,12 @@ function EditPet({ pet, onCancel, onSaved }) {
             Sexo
             <select
               value={f.sexo}
-              onChange={e => set('sexo', e.target.value)}
+              onChange={e =>
+                set(
+                  'sexo',
+                  e.target.value
+                )
+              }
             >
               <option>Macho</option>
               <option>Fêmea</option>
@@ -699,7 +1413,12 @@ function EditPet({ pet, onCancel, onSaved }) {
           Características / Observações
           <textarea
             value={f.caracteristicas}
-            onChange={e => set('caracteristicas', e.target.value)}
+            onChange={e =>
+              set(
+                'caracteristicas',
+                e.target.value
+              )
+            }
           />
         </label>
 
@@ -708,7 +1427,12 @@ function EditPet({ pet, onCancel, onSaved }) {
             WhatsApp
             <input
               value={f.whatsapp}
-              onChange={e => set('whatsapp', e.target.value)}
+              onChange={e =>
+                set(
+                  'whatsapp',
+                  e.target.value
+                )
+              }
             />
           </label>
 
@@ -716,7 +1440,12 @@ function EditPet({ pet, onCancel, onSaved }) {
             Cidade
             <input
               value={f.cidade}
-              onChange={e => set('cidade', e.target.value)}
+              onChange={e =>
+                set(
+                  'cidade',
+                  e.target.value
+                )
+              }
             />
           </label>
         </div>
@@ -725,7 +1454,12 @@ function EditPet({ pet, onCancel, onSaved }) {
           Status
           <select
             value={f.status}
-            onChange={e => set('status', e.target.value)}
+            onChange={e =>
+              set(
+                'status',
+                e.target.value
+              )
+            }
           >
             <option>Normal</option>
             <option>Perdido</option>
@@ -738,7 +1472,12 @@ function EditPet({ pet, onCancel, onSaved }) {
           <input
             placeholder="RF-00001"
             value={f.tag}
-            onChange={e => set('tag', e.target.value)}
+            onChange={e =>
+              set(
+                'tag',
+                e.target.value
+              )
+            }
           />
         </label>
 
@@ -747,11 +1486,19 @@ function EditPet({ pet, onCancel, onSaved }) {
           <input
             type="file"
             accept="image/*"
-            onChange={e => setFile(e.target.files?.[0])}
+            onChange={e =>
+              setFile(
+                e.target.files?.[0]
+              )
+            }
           />
         </label>
 
-        {err && <div className="err">{err}</div>}
+        {err && (
+          <div className="err">
+            {err}
+          </div>
+        )}
 
         <div className="edit-actions">
           <button
@@ -763,8 +1510,13 @@ function EditPet({ pet, onCancel, onSaved }) {
             Cancelar
           </button>
 
-          <button className="primary" disabled={saving}>
-            {saving ? 'Salvando...' : 'Salvar alterações'}
+          <button
+            className="primary"
+            disabled={saving}
+          >
+            {saving
+              ? 'Salvando...'
+              : 'Salvar alterações'}
           </button>
         </div>
       </form>
@@ -780,20 +1532,21 @@ function Detail() {
   const { id } = useParams();
 
   const [p, setP] = useState();
-  const [loading, setLoading] = useState(true);
-  const [editing, setEditing] = useState(false);
-  const [err, setErr] = useState('');
+  const [loading, setLoading] =
+    useState(true);
+  const [editing, setEditing] =
+    useState(false);
+  const [err, setErr] =
+    useState('');
 
   async function loadPet() {
     setLoading(true);
     setErr('');
 
-    /*
-      Buscamos também o código da tag
-      para permitir editar a tag.
-    */
-
-    const { data, error } = await S
+    const {
+      data,
+      error
+    } = await S
       .from('pets')
       .select(
         `
@@ -812,7 +1565,8 @@ function Detail() {
     } else {
       setP({
         ...data,
-        tag_codigo: data.tags?.codigo || ''
+        tag_codigo:
+          data.tags?.codigo || ''
       });
     }
 
@@ -834,9 +1588,13 @@ function Detail() {
   if (err) {
     return (
       <div className="container">
-        <Link to="/pets">← Voltar</Link>
+        <Link to="/pets">
+          ← Voltar
+        </Link>
 
-        <div className="err">{err}</div>
+        <div className="err">
+          {err}
+        </div>
       </div>
     );
   }
@@ -844,9 +1602,13 @@ function Detail() {
   if (!p) {
     return (
       <div className="container">
-        <Link to="/pets">← Voltar</Link>
+        <Link to="/pets">
+          ← Voltar
+        </Link>
 
-        <p>Pet não encontrado.</p>
+        <p>
+          Pet não encontrado.
+        </p>
       </div>
     );
   }
@@ -854,17 +1616,17 @@ function Detail() {
   if (editing) {
     return (
       <div className="container narrow">
-        <Link to="/pets">← Voltar</Link>
+        <Link to="/pets">
+          ← Voltar
+        </Link>
 
         <EditPet
           pet={p}
-          onCancel={() => setEditing(false)}
+          onCancel={() =>
+            setEditing(false)
+          }
           onSaved={updated => {
-            setP({
-              ...updated,
-              tag_codigo: p.tag_codigo
-            });
-
+            setP(updated);
             setEditing(false);
           }}
         />
@@ -874,12 +1636,17 @@ function Detail() {
 
   return (
     <div className="container narrow">
-      <Link to="/pets">← Voltar</Link>
+      <Link to="/pets">
+        ← Voltar
+      </Link>
 
       <div className="detail">
         <div className="photo big">
           {p.foto_url ? (
-            <img src={p.foto_url} alt={p.nome} />
+            <img
+              src={p.foto_url}
+              alt={p.nome}
+            />
           ) : (
             <span>🐾</span>
           )}
@@ -888,14 +1655,17 @@ function Detail() {
         <h1>{p.nome}</h1>
 
         <p>
-          {p.raca || 'Raça não informada'} · {p.sexo}
+          {p.raca ||
+            'Raça não informada'}{' '}
+          · {p.sexo}
         </p>
 
         <b
           className={
             p.status === 'Perdido'
               ? 'lost'
-              : p.status === 'Encontrado'
+              : p.status ===
+                'Encontrado'
               ? 'found'
               : ''
           }
@@ -906,13 +1676,17 @@ function Detail() {
         {p.caracteristicas && (
           <div className="info">
             <b>Observações</b>
-            <p>{p.caracteristicas}</p>
+
+            <p>
+              {p.caracteristicas}
+            </p>
           </div>
         )}
 
         {p.whatsapp && (
           <div className="info">
             <b>WhatsApp</b>
+
             <p>{p.whatsapp}</p>
           </div>
         )}
@@ -920,6 +1694,7 @@ function Detail() {
         {p.cidade && (
           <div className="info">
             <b>Cidade</b>
+
             <p>{p.cidade}</p>
           </div>
         )}
@@ -927,6 +1702,7 @@ function Detail() {
         {p.tag_codigo && (
           <div className="info">
             <b>Tag</b>
+
             <p>{p.tag_codigo}</p>
           </div>
         )}
@@ -934,7 +1710,9 @@ function Detail() {
         <div className="edit-actions">
           <button
             className="primary"
-            onClick={() => setEditing(true)}
+            onClick={() =>
+              setEditing(true)
+            }
           >
             ✏️ Editar pet
           </button>
@@ -948,69 +1726,242 @@ function Detail() {
    PERFIL
 ========================= */
 
-function Profile() {
+function Profile({ onOut }) {
   const [p, setP] = useState({
     nome: '',
-    telefone: ''
+    telefone: '',
+    email: ''
   });
 
+  const [loading, setLoading] =
+    useState(true);
+
+  const [saving, setSaving] =
+    useState(false);
+
+  const [saved, setSaved] =
+    useState(false);
+
   useEffect(() => {
-    S.from('profiles')
-      .select('nome,telefone')
-      .single()
-      .then(({ data }) => {
-        if (data) {
-          setP(data);
-        }
+    async function load() {
+      const {
+        data: { user }
+      } = await S.auth.getUser();
+
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
+      const {
+        data
+      } = await S
+        .from('profiles')
+        .select(
+          'nome,telefone'
+        )
+        .eq('id', user.id)
+        .single();
+
+      setP({
+        nome:
+          data?.nome ||
+          user.user_metadata?.nome ||
+          '',
+        telefone:
+          data?.telefone ||
+          user.user_metadata?.telefone ||
+          '',
+        email:
+          user.email || ''
       });
+
+      setLoading(false);
+    }
+
+    load();
   }, []);
 
   async function save(e) {
     e.preventDefault();
 
+    setSaving(true);
+    setSaved(false);
+
     const {
       data: { user }
     } = await S.auth.getUser();
 
-    await S
+    if (!user) {
+      setSaving(false);
+      return;
+    }
+
+    const {
+      error
+    } = await S
       .from('profiles')
-      .update(p)
+      .update({
+        nome: p.nome,
+        telefone: p.telefone
+      })
       .eq('id', user.id);
+
+    setSaving(false);
+
+    if (!error) {
+      setSaved(true);
+
+      setTimeout(() => {
+        setSaved(false);
+      }, 3000);
+    }
   }
 
+  if (loading) {
+    return (
+      <div className="container">
+        Carregando perfil...
+      </div>
+    );
+  }
+
+  const initial =
+    p.nome
+      ? p.nome
+          .charAt(0)
+          .toUpperCase()
+      : '👤';
+
   return (
-    <div className="container narrow">
-      <h1>Perfil</h1>
+    <div className="profile-page">
+      <div className="profile-header">
+        <div className="profile-avatar">
+          {initial}
+        </div>
 
-      <form className="form" onSubmit={save}>
-        <label>
-          Nome
-          <input
-            value={p.nome}
-            onChange={e =>
-              setP({
-                ...p,
-                nome: e.target.value
-              })
-            }
-          />
-        </label>
+        <div>
+          <small>
+            MINHA CONTA
+          </small>
 
-        <label>
-          Telefone
-          <input
-            value={p.telefone || ''}
-            onChange={e =>
-              setP({
-                ...p,
-                telefone: e.target.value
-              })
-            }
-          />
-        </label>
+          <h1>Meu perfil</h1>
 
-        <button className="primary">Salvar</button>
-      </form>
+          <p>
+            Gerencie seus dados pessoais.
+          </p>
+        </div>
+      </div>
+
+      <div className="profile-card">
+        <div className="profile-section-title">
+          <span>👤</span>
+
+          <div>
+            <h2>
+              Dados pessoais
+            </h2>
+
+            <p>
+              Mantenha suas informações
+              atualizadas.
+            </p>
+          </div>
+        </div>
+
+        <form
+          className="form profile-form"
+          onSubmit={save}
+        >
+          <label>
+            Nome completo
+
+            <input
+              required
+              value={p.nome}
+              onChange={e =>
+                setP({
+                  ...p,
+                  nome:
+                    e.target.value
+                })
+              }
+            />
+          </label>
+
+          <label>
+            WhatsApp / Telefone
+
+            <input
+              type="tel"
+              required
+              value={p.telefone}
+              onChange={e =>
+                setP({
+                  ...p,
+                  telefone:
+                    e.target.value
+                })
+              }
+              placeholder="(13) 99999-9999"
+            />
+          </label>
+
+          <label>
+            E-mail
+
+            <input
+              type="email"
+              value={p.email}
+              disabled
+            />
+
+            <small className="field-help">
+              O e-mail da conta não
+              pode ser alterado aqui.
+            </small>
+          </label>
+
+          {saved && (
+            <div className="success-message">
+              ✓ Dados salvos com sucesso.
+            </div>
+          )}
+
+          <button
+            className="primary"
+            disabled={saving}
+          >
+            {saving
+              ? 'Salvando...'
+              : 'Salvar alterações'}
+          </button>
+        </form>
+      </div>
+
+      <div className="profile-card account-card">
+        <div className="profile-section-title">
+          <span>🔐</span>
+
+          <div>
+            <h2>
+              Segurança
+            </h2>
+
+            <p>
+              Sua conta utiliza autenticação
+              segura da SOSPet.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <button
+        className="logout-button"
+        onClick={onOut}
+      >
+        Sair da conta
+      </button>
     </div>
   );
 }
@@ -1027,7 +1978,10 @@ function Public() {
 
   useEffect(() => {
     (async () => {
-      const { data, error } = await S.rpc(
+      const {
+        data,
+        error
+      } = await S.rpc(
         'get_public_pet_by_tag',
         {
           tag_code: code
@@ -1036,104 +1990,394 @@ function Public() {
 
       if (error) {
         console.error(error);
-        return setErr('Erro ao consultar a tag.');
+
+        return setErr(
+          'Erro ao consultar a tag.'
+        );
       }
 
       const pet = data?.[0];
 
       if (!pet) {
-        return setErr('Nenhum pet associado a esta tag.');
+        return setErr(
+          'Nenhum pet associado a esta tag.'
+        );
       }
 
       setP(pet);
     })();
   }, [code]);
 
+  /* =====================
+     ERRO
+  ===================== */
+
   if (err) {
     return (
-      <div className="public">
-        <div className="public-card">
+      <div
+        className="public"
+        style={{
+          minHeight: '100vh',
+          width: '100%',
+          background: '#0B0B0B',
+          color: '#FFFFFF',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '24px',
+          boxSizing: 'border-box'
+        }}
+      >
+        <div
+          className="public-card"
+          style={{
+            width: '100%',
+            maxWidth: '420px',
+            background: '#151515',
+            border: '1px solid #2A2A2A',
+            borderRadius: '20px',
+            padding: '28px 22px',
+            boxSizing: 'border-box',
+            textAlign: 'center',
+            color: '#FFFFFF'
+          }}
+        >
           <Logo />
 
-          <h1>Ops!</h1>
+          <h1
+            style={{
+              color: '#FFFFFF',
+              marginTop: '24px'
+            }}
+          >
+            Ops!
+          </h1>
 
-          <p>{err}</p>
+          <p
+            style={{
+              color: '#A0A0A0'
+            }}
+          >
+            {err}
+          </p>
         </div>
       </div>
     );
   }
 
+  /* =====================
+     CARREGANDO
+  ===================== */
+
   if (!p) {
-    return <div className="public">Carregando...</div>;
+    return (
+      <div
+        className="public"
+        style={{
+          minHeight: '100vh',
+          width: '100%',
+          background: '#0B0B0B',
+          color: '#A0A0A0',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '24px',
+          boxSizing: 'border-box'
+        }}
+      >
+        Carregando...
+      </div>
+    );
   }
+
+  /* =====================
+     PÁGINA PÚBLICA DO PET
+  ===================== */
 
   return (
     <div
       className={
-        'public ' + (p.status === 'Perdido' ? 'lost-bg' : '')
+        'public ' +
+        (p.status === 'Perdido'
+          ? 'lost-bg'
+          : '')
       }
+      style={{
+        minHeight: '100vh',
+        width: '100%',
+        background:
+          p.status === 'Perdido'
+            ? '#1A0B0B'
+            : '#0B0B0B',
+        color: '#FFFFFF',
+        padding: '24px 16px 40px',
+        boxSizing: 'border-box'
+      }}
     >
-      <div className="public-card">
+      <div
+        className="public-card"
+        style={{
+          width: '100%',
+          maxWidth: '420px',
+          margin: '0 auto',
+          background: '#151515',
+          border: '1px solid #2A2A2A',
+          borderRadius: '22px',
+          padding: '24px 20px',
+          boxSizing: 'border-box',
+          textAlign: 'center',
+          boxShadow:
+            '0 10px 35px rgba(0, 0, 0, 0.35)'
+        }}
+      >
+
+        {/* LOGO */}
+
         <Logo />
 
+        {/* =====================
+            STATUS PERDIDO
+        ===================== */}
+
         {p.status === 'Perdido' && (
-          <div className="alert">
+          <div
+            className="alert"
+            style={{
+              marginTop: '20px',
+              marginBottom: '20px',
+              padding: '14px',
+              borderRadius: '14px',
+              background: '#3A1111',
+              border: '1px solid #6B2020',
+              color: '#FF6B6B',
+              fontWeight: '700'
+            }}
+          >
             🚨 PET PERDIDO
+
             <br />
 
-            <small>
-              Este pet está sendo procurado pelo tutor.
+            <small
+              style={{
+                display: 'block',
+                marginTop: '5px',
+                color: '#FFB0B0',
+                fontWeight: '400'
+              }}
+            >
+              Este pet está sendo procurado
+              pelo tutor.
             </small>
           </div>
         )}
 
+        {/* =====================
+            STATUS ENCONTRADO
+        ===================== */}
+
         {p.status === 'Encontrado' && (
-          <div className="found">
+          <div
+            className="found"
+            style={{
+              marginTop: '20px',
+              marginBottom: '20px',
+              padding: '12px',
+              borderRadius: '14px',
+              background: '#102A18',
+              border: '1px solid #245A35',
+              color: '#65D98A',
+              fontWeight: '700'
+            }}
+          >
             ✓ Pet encontrado
           </div>
         )}
 
-        <div className="photo public-photo">
+        {/* =====================
+            FOTO
+        ===================== */}
+
+        <div
+          className="photo public-photo"
+          style={{
+            width: '150px',
+            height: '150px',
+            margin: '20px auto',
+            borderRadius: '50%',
+            overflow: 'hidden',
+            background: '#222222',
+            border: '3px solid #333333',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
           {p.foto_url ? (
-            <img src={p.foto_url} alt={p.nome} />
+            <img
+              src={p.foto_url}
+              alt={p.nome}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block'
+              }}
+            />
           ) : (
-            <span>🐾</span>
+            <span
+              style={{
+                fontSize: '48px'
+              }}
+            >
+              🐾
+            </span>
           )}
         </div>
 
-        <h1>{p.nome}</h1>
+        {/* =====================
+            NOME DO PET
+        ===================== */}
 
-        <p>
-          {p.raca || 'Raça não informada'} · {p.sexo}
+        <h1
+          style={{
+            margin: '10px 0 5px',
+            color: '#B8B8B8',
+            fontSize: '30px',
+            fontWeight: '700'
+          }}
+        >
+          {p.nome}
+        </h1>
+
+        {/* =====================
+            RAÇA / SEXO
+        ===================== */}
+
+        <p
+          style={{
+            margin: '0 0 22px',
+            color: '#888888',
+            fontSize: '15px'
+          }}
+        >
+          {p.raca ||
+            'Raça não informada'}{' '}
+          · {p.sexo}
         </p>
 
-        {p.caracteristicas && (
-          <div className="info">
-            <b>Características</b>
+        {/* =====================
+            CARACTERÍSTICAS
+        ===================== */}
 
-            <p>{p.caracteristicas}</p>
+        {p.caracteristicas && (
+          <div
+            className="info"
+            style={{
+              textAlign: 'left',
+              background: '#101010',
+              border: '1px solid #252525',
+              borderRadius: '14px',
+              padding: '15px',
+              marginBottom: '12px'
+            }}
+          >
+            <b
+              style={{
+                display: 'block',
+                color: '#B8B8B8',
+                marginBottom: '6px'
+              }}
+            >
+              Características
+            </b>
+
+            <p
+              style={{
+                margin: 0,
+                color: '#888888',
+                lineHeight: '1.5'
+              }}
+            >
+              {p.caracteristicas}
+            </p>
           </div>
         )}
+
+        {/* =====================
+            CIDADE
+        ===================== */}
 
         {p.cidade && (
-          <div className="info">
-            <b>Cidade</b>
+          <div
+            className="info"
+            style={{
+              textAlign: 'left',
+              background: '#101010',
+              border: '1px solid #252525',
+              borderRadius: '14px',
+              padding: '15px',
+              marginBottom: '18px'
+            }}
+          >
+            <b
+              style={{
+                display: 'block',
+                color: '#B8B8B8',
+                marginBottom: '6px'
+              }}
+            >
+              Cidade
+            </b>
 
-            <p>{p.cidade}</p>
+            <p
+              style={{
+                margin: 0,
+                color: '#888888'
+              }}
+            >
+              {p.cidade}
+            </p>
           </div>
         )}
 
-        <div className="actions">
+        {/* =====================
+            BOTÕES DE CONTATO
+        ===================== */}
+
+        <div
+          className="actions"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            marginTop: '20px'
+          }}
+        >
           {p.whatsapp && (
             <>
               <a
                 className="wa"
                 href={
                   'https://wa.me/55' +
-                  p.whatsapp.replace(/\D/g, '')
+                  p.whatsapp.replace(
+                    /\D/g,
+                    ''
+                  )
                 }
                 target="_blank"
                 rel="noreferrer"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '48px',
+                  borderRadius: '12px',
+                  background: '#25D366',
+                  color: '#FFFFFF',
+                  textDecoration: 'none',
+                  fontWeight: '700',
+                  fontSize: '15px'
+                }}
               >
                 💬 WhatsApp
               </a>
@@ -1142,14 +2386,31 @@ function Public() {
                 className="call"
                 href={
                   'tel:' +
-                  p.whatsapp.replace(/\D/g, '')
+                  p.whatsapp.replace(
+                    /\D/g,
+                    ''
+                  )
                 }
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '48px',
+                  borderRadius: '12px',
+                  background: '#222222',
+                  border: '1px solid #333333',
+                  color: '#B8B8B8',
+                  textDecoration: 'none',
+                  fontWeight: '700',
+                  fontSize: '15px'
+                }}
               >
                 📞 Ligar
               </a>
             </>
           )}
         </div>
+
       </div>
     </div>
   );
@@ -1160,8 +2421,11 @@ function Public() {
 ========================= */
 
 function App() {
-  const [session, setSession] = useState(null);
-  const [ready, setReady] = useState(false);
+  const [session, setSession] =
+    useState(null);
+
+  const [ready, setReady] =
+    useState(false);
 
   useEffect(() => {
     if (!S) {
@@ -1169,18 +2433,25 @@ function App() {
       return;
     }
 
-    S.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setReady(true);
-    });
+    S.auth
+      .getSession()
+      .then(({ data }) => {
+        setSession(data.session);
+        setReady(true);
+      });
 
     const {
-      data: { subscription }
-    } = S.auth.onAuthStateChange((_, s) => {
-      setSession(s);
-    });
+      data: {
+        subscription
+      }
+    } = S.auth.onAuthStateChange(
+      (_, s) => {
+        setSession(s);
+      }
+    );
 
-    return () => subscription.unsubscribe();
+    return () =>
+      subscription.unsubscribe();
   }, []);
 
   if (!ready) {
@@ -1192,10 +2463,16 @@ function App() {
   }
 
   const guard = x =>
-    session ? x : <Navigate to="/login" />;
+    session
+      ? x
+      : <Navigate to="/login" />;
 
   return (
     <Routes>
+      {/* =====================
+          INÍCIO
+      ===================== */}
+
       <Route
         path="/"
         element={
@@ -1205,18 +2482,26 @@ function App() {
             <div className="landing">
               <Logo />
 
-              <h1>Tecnologia a favor da vida.</h1>
+              <h1>
+                Tecnologia a favor da vida.
+              </h1>
 
               <p>
-                Identificação inteligente para ajudar seu pet
-                a voltar para casa.
+                Identificação inteligente para
+                ajudar seu pet a voltar para casa.
               </p>
 
-              <Link className="primary btn" to="/login">
+              <Link
+                className="primary btn"
+                to="/login"
+              >
                 Entrar
               </Link>
 
-              <Link className="secondary btn" to="/cadastro">
+              <Link
+                className="secondary btn"
+                to="/cadastro"
+              >
                 Criar conta
               </Link>
             </div>
@@ -1224,64 +2509,125 @@ function App() {
         }
       />
 
+      {/* =====================
+          LOGIN
+      ===================== */}
+
       <Route
         path="/login"
         element={
-          session ? <Navigate to="/pets" /> : <Login />
+          session ? (
+            <Navigate to="/pets" />
+          ) : (
+            <Login />
+          )
         }
       />
+
+      {/* =====================
+          CADASTRO
+      ===================== */}
 
       <Route
         path="/cadastro"
         element={
-          session ? <Navigate to="/pets" /> : <Register />
+          session ? (
+            <Navigate to="/pets" />
+          ) : (
+            <Register />
+          )
         }
       />
+
+      {/* =====================
+          CONFIRMAÇÃO DE E-MAIL
+      ===================== */}
+
+      <Route
+        path="/confirmar-email"
+        element={
+          session ? (
+            <Navigate to="/pets" />
+          ) : (
+            <ConfirmEmail />
+          )
+        }
+      />
+
+      {/* =====================
+          TAG PÚBLICA
+      ===================== */}
 
       <Route
         path="/tag/:code"
         element={<Public />}
       />
 
+      {/* =====================
+          MEUS PETS
+      ===================== */}
+
       <Route
         path="/pets"
         element={guard(
-          <Shell onOut={() => S.auth.signOut()}>
+          <Shell>
             <Pets />
           </Shell>
         )}
       />
 
+      {/* =====================
+          NOVO PET
+      ===================== */}
+
       <Route
         path="/pets/novo"
         element={guard(
-          <Shell onOut={() => S.auth.signOut()}>
+          <Shell>
             <NewPet />
           </Shell>
         )}
       />
 
+      {/* =====================
+          DETALHE DO PET
+      ===================== */}
+
       <Route
         path="/pets/:id"
         element={guard(
-          <Shell onOut={() => S.auth.signOut()}>
+          <Shell>
             <Detail />
           </Shell>
         )}
       />
 
+      {/* =====================
+          PERFIL
+      ===================== */}
+
       <Route
         path="/perfil"
         element={guard(
-          <Shell onOut={() => S.auth.signOut()}>
-            <Profile />
+          <Shell>
+            <Profile
+              onOut={() =>
+                S.auth.signOut()
+              }
+            />
           </Shell>
         )}
       />
 
+      {/* =====================
+          ROTA DESCONHECIDA
+      ===================== */}
+
       <Route
         path="*"
-        element={<Navigate to="/" />}
+        element={
+          <Navigate to="/" />
+        }
       />
     </Routes>
   );

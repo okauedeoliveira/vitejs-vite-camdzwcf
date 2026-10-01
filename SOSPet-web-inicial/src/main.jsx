@@ -336,6 +336,10 @@ function Login() {
 
 function Register() {
   const nav = useNavigate();
+  const params = new URLSearchParams(
+    window.location.search
+  );
+  const tag = params.get('tag');
 
   const [name, setN] = useState('');
   const [phone, setPhone] = useState('');
@@ -362,7 +366,8 @@ function Register() {
       options: {
         data: {
           nome: name,
-          telefone: phone
+          telefone: phone,
+          tag: tag || null
         }
       }
     });
@@ -375,14 +380,29 @@ function Register() {
     }
 
     if (data.session) {
-      nav('/pets');
+      if (tag) {
+        nav(
+          '/pets/novo?tag=' +
+            encodeURIComponent(tag)
+        );
+      } else {
+        nav('/pets');
+      }
+
       return;
     }
 
-    nav(
+    let confirmUrl =
       '/confirmar-email?email=' +
-        encodeURIComponent(email)
-    );
+      encodeURIComponent(email);
+
+    if (tag) {
+      confirmUrl +=
+        '&tag=' +
+        encodeURIComponent(tag);
+    }
+
+    nav(confirmUrl);
   }
 
   return (
@@ -412,8 +432,6 @@ function Register() {
         }}
       >
 
-        {/* LOGO */}
-
         <div
           style={{
             display: 'flex',
@@ -424,8 +442,6 @@ function Register() {
         >
           <Logo />
         </div>
-
-        {/* TÍTULO */}
 
         <h1
           style={{
@@ -450,8 +466,6 @@ function Register() {
           Comece a proteger seus pets.
         </p>
 
-        {/* FORMULÁRIO */}
-
         <form
           onSubmit={go}
           style={{
@@ -460,8 +474,6 @@ function Register() {
             gap: '16px'
           }}
         >
-
-          {/* NOME */}
 
           <label
             style={{
@@ -494,8 +506,6 @@ function Register() {
               }}
             />
           </label>
-
-          {/* TELEFONE */}
 
           <label
             style={{
@@ -530,8 +540,6 @@ function Register() {
             />
           </label>
 
-          {/* E-MAIL */}
-
           <label
             style={{
               display: 'flex',
@@ -564,8 +572,6 @@ function Register() {
               }}
             />
           </label>
-
-          {/* SENHA */}
 
           <label
             style={{
@@ -601,8 +607,6 @@ function Register() {
             />
           </label>
 
-          {/* ERRO */}
-
           {msg && (
             <div
               className="err"
@@ -619,8 +623,6 @@ function Register() {
               {msg}
             </div>
           )}
-
-          {/* BOTÃO */}
 
           <button
             type="submit"
@@ -648,8 +650,6 @@ function Register() {
           </button>
 
         </form>
-
-        {/* LOGIN */}
 
         <div
           style={{
@@ -685,8 +685,12 @@ function Register() {
 function ConfirmEmail() {
   const nav = useNavigate();
 
-  const params = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(
+    window.location.search
+  );
+
   const email = params.get('email') || '';
+  const tag = params.get('tag') || '';
 
   const [err, setErr] = useState('');
   const [msg, setMsg] = useState('');
@@ -725,14 +729,20 @@ function ConfirmEmail() {
 
     if (error) {
       console.error(error);
-      setErr(error.message || 'Código inválido ou expirado.');
+      setErr(
+        error.message ||
+          'Código inválido ou expirado.'
+      );
       setLoading(false);
       return;
     }
 
     if (data?.user) {
-      const nome = data.user.user_metadata?.nome || '';
-      const telefone = data.user.user_metadata?.telefone || '';
+      const nome =
+        data.user.user_metadata?.nome || '';
+
+      const telefone =
+        data.user.user_metadata?.telefone || '';
 
       await S
         .from('profiles')
@@ -744,7 +754,15 @@ function ConfirmEmail() {
     }
 
     setLoading(false);
-    nav('/pets');
+
+    if (tag) {
+      nav(
+        '/pets/novo?tag=' +
+          encodeURIComponent(tag)
+      );
+    } else {
+      nav('/pets');
+    }
   }
 
   async function resend() {
@@ -802,7 +820,8 @@ function ConfirmEmail() {
           padding: '30px 24px',
           boxSizing: 'border-box',
           textAlign: 'center',
-          boxShadow: '0 10px 35px rgba(0, 0, 0, 0.4)'
+          boxShadow:
+            '0 10px 35px rgba(0, 0, 0, 0.4)'
         }}
       >
         <div
@@ -1508,6 +1527,12 @@ function Pets() {
 function NewPet() {
   const nav = useNavigate();
 
+  const params = new URLSearchParams(
+    window.location.search
+  );
+
+  const tagFromUrl = params.get('tag') || '';
+
   const [f, setF] = useState({
     nome: '',
     raca: '',
@@ -1516,7 +1541,7 @@ function NewPet() {
     whatsapp: '',
     cidade: '',
     status: 'Normal',
-    tag: ''
+    tag: tagFromUrl
   });
 
   const [file, setFile] = useState();
@@ -1542,14 +1567,19 @@ function NewPet() {
     if (f.tag) {
       const { data, error } = await S
         .from('tags')
-        .select('id')
-        .eq('codigo', f.tag)
-        .eq('ativa', true)
+        .select('id,ativa')
+        .eq('codigo', f.tag.trim())
         .maybeSingle();
 
       if (error || !data) {
         return setErr(
           'Tag não encontrada.'
+        );
+      }
+
+      if (data.ativa) {
+        return setErr(
+          'Esta tag já está ativa.'
         );
       }
 
@@ -1582,7 +1612,7 @@ function NewPet() {
         .data.publicUrl;
     }
 
-    const { error } = await S
+    const { data: pet, error } = await S
       .from('pets')
       .insert({
         tutor_id: user.id,
@@ -1596,13 +1626,35 @@ function NewPet() {
         whatsapp: f.whatsapp || null,
         cidade: f.cidade || null,
         status: f.status
-      });
+      })
+      .select('id')
+      .single();
 
     if (error) {
       setErr(error.message);
-    } else {
-      nav('/pets');
+      return;
     }
+
+    if (tag_id) {
+      const { error: tagError } = await S
+        .from('tags')
+        .update({
+          ativa: true
+        })
+        .eq('id', tag_id);
+
+      if (tagError) {
+        await S
+          .from('pets')
+          .delete()
+          .eq('id', pet.id);
+
+        setErr(tagError.message);
+        return;
+      }
+    }
+
+    nav('/pets');
   }
 
   return (
@@ -1708,7 +1760,6 @@ function NewPet() {
             >
               <option>Normal</option>
               <option>Perdido</option>
-              <option>Encontrado</option>
             </select>
           </label>
 
@@ -1717,6 +1768,7 @@ function NewPet() {
             <input
               placeholder="RF-00001"
               value={f.tag}
+              readOnly={!!tagFromUrl}
               onChange={e =>
                 set('tag', e.target.value)
               }
@@ -1729,6 +1781,7 @@ function NewPet() {
           <input
             type="file"
             accept="image/*"
+            capture="environment"
             onChange={e =>
               setFile(
                 e.target.files?.[0]
@@ -1823,32 +1876,6 @@ function EditPet({
           .data.publicUrl;
       }
 
-      let tag_id = null;
-
-      if (f.tag.trim()) {
-        const {
-          data: tagData,
-          error: tagError
-        } = await S
-          .from('tags')
-          .select('id')
-          .eq('codigo', f.tag.trim())
-          .eq('ativa', true)
-          .maybeSingle();
-
-        if (tagError) {
-          throw tagError;
-        }
-
-        if (!tagData) {
-          throw new Error(
-            'Tag não encontrada.'
-          );
-        }
-
-        tag_id = tagData.id;
-      }
-
       const {
         data,
         error
@@ -1865,8 +1892,7 @@ function EditPet({
             f.whatsapp || null,
           cidade:
             f.cidade || null,
-          status: f.status,
-          tag_id
+          status: f.status
         })
         .eq('id', pet.id)
         .select('*')
@@ -1876,15 +1902,10 @@ function EditPet({
         throw error;
       }
 
-      /*
-        Mantemos o novo código da tag
-        para atualizar a tela imediatamente.
-      */
-
       onSaved({
         ...data,
         tag_codigo:
-          f.tag.trim() || ''
+          pet.tag_codigo || ''
       });
     } catch (error) {
       setErr(
@@ -2003,7 +2024,6 @@ function EditPet({
           >
             <option>Normal</option>
             <option>Perdido</option>
-            <option>Encontrado</option>
           </select>
         </label>
 
@@ -2012,12 +2032,7 @@ function EditPet({
           <input
             placeholder="RF-00001"
             value={f.tag}
-            onChange={e =>
-              set(
-                'tag',
-                e.target.value
-              )
-            }
+            readOnly
           />
         </label>
 
@@ -2026,6 +2041,7 @@ function EditPet({
           <input
             type="file"
             accept="image/*"
+            capture="environment"
             onChange={e =>
               setFile(
                 e.target.files?.[0]
@@ -2404,6 +2420,12 @@ function Profile({ onOut }) {
   const [saving, setSaving] =
     useState(false);
 
+  const [editing, setEditing] =
+    useState(false);
+
+  const [changed, setChanged] =
+    useState(false);
+
   const [saved, setSaved] =
     useState(false);
 
@@ -2447,8 +2469,29 @@ function Profile({ onOut }) {
     load();
   }, []);
 
+  function updateField(
+    field,
+    value
+  ) {
+    setP(prev => ({
+      ...prev,
+      [field]: value
+    }));
+
+    setChanged(true);
+    setSaved(false);
+  }
+
+  function startEditing() {
+    setEditing(true);
+    setChanged(false);
+    setSaved(false);
+  }
+
   async function save(e) {
     e.preventDefault();
+
+    if (!changed) return;
 
     setSaving(true);
     setSaved(false);
@@ -2475,6 +2518,8 @@ function Profile({ onOut }) {
     setSaving(false);
 
     if (!error) {
+      setChanged(false);
+      setEditing(false);
       setSaved(true);
 
       setTimeout(() => {
@@ -2491,25 +2536,10 @@ function Profile({ onOut }) {
     );
   }
 
-  const initial =
-    p.nome
-      ? p.nome
-          .charAt(0)
-          .toUpperCase()
-      : '👤';
-
   return (
     <div className="profile-page">
       <div className="profile-header">
-        <div className="profile-avatar">
-          {initial}
-        </div>
-
         <div>
-          <small>
-            MINHA CONTA
-          </small>
-
           <h1>Meu perfil</h1>
 
           <p>
@@ -2520,8 +2550,6 @@ function Profile({ onOut }) {
 
       <div className="profile-card">
         <div className="profile-section-title">
-          <span>👤</span>
-
           <div>
             <h2>
               Dados pessoais
@@ -2544,12 +2572,12 @@ function Profile({ onOut }) {
             <input
               required
               value={p.nome}
+              disabled={!editing}
               onChange={e =>
-                setP({
-                  ...p,
-                  nome:
-                    e.target.value
-                })
+                updateField(
+                  'nome',
+                  e.target.value
+                )
               }
             />
           </label>
@@ -2561,12 +2589,12 @@ function Profile({ onOut }) {
               type="tel"
               required
               value={p.telefone}
+              disabled={!editing}
               onChange={e =>
-                setP({
-                  ...p,
-                  telefone:
-                    e.target.value
-                })
+                updateField(
+                  'telefone',
+                  e.target.value
+                )
               }
               placeholder="(13) 99999-9999"
             />
@@ -2593,36 +2621,33 @@ function Profile({ onOut }) {
             </div>
           )}
 
-          <button
-            className="primary"
-            disabled={saving}
-          >
-            {saving
-              ? 'Salvando...'
-              : 'Salvar alterações'}
-          </button>
+          {!editing && (
+            <button
+              type="button"
+              className="primary"
+              onClick={startEditing}
+            >
+              Editar informações
+            </button>
+          )}
+
+          {editing && changed && (
+            <button
+              type="submit"
+              className="primary"
+              disabled={saving}
+            >
+              {saving
+                ? 'Salvando...'
+                : 'Salvar alterações'}
+            </button>
+          )}
         </form>
       </div>
 
-      <div className="profile-card account-card">
-        <div className="profile-section-title">
-          <span>🔐</span>
-
-          <div>
-            <h2>
-              Segurança
-            </h2>
-
-            <p>
-              Sua conta utiliza autenticação
-              segura da SOSPet.
-            </p>
-          </div>
-        </div>
-      </div>
-
       <button
-        className="logout-button"
+        type="button"
+        className="secondary btn"
         onClick={onOut}
       >
         Sair da conta
@@ -2637,12 +2662,54 @@ function Profile({ onOut }) {
 
 function Public() {
   const { code } = useParams();
+  const navigate = useNavigate();
+  
+  if (!code) {
+    return (
+      <div
+        style={{
+          minHeight: '100vh',
+          background: '#0B0B0B',
+          color: '#FFFFFF',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '24px'
+        }}
+      >
+        PARAM CODE VAZIO
+      </div>
+    );
+  }
 
   const [p, setP] = useState();
   const [err, setErr] = useState('');
 
   useEffect(() => {
     (async () => {
+      const {
+        data: tag,
+        error: tagError
+      } = await S
+        .from('tags')
+        .select('id,codigo,ativa')
+        .eq('codigo', code.trim())
+        .maybeSingle();
+
+      if (tagError) {
+        console.error(tagError);
+
+        return setErr(
+          'Erro ao consultar a tag.'
+        );
+      }
+
+      if (!tag) {
+        return setErr(
+          'Tag não encontrada.'
+        );
+      }
+
       const {
         data,
         error
@@ -2664,6 +2731,18 @@ function Public() {
       const pet = data?.[0];
 
       if (!pet) {
+        if (!tag.ativa) {
+          navigate(
+            '/cadastro?tag=' +
+              encodeURIComponent(tag.codigo),
+            {
+              replace: true
+            }
+          );
+
+          return;
+        }
+
         return setErr(
           'Nenhum pet associado a esta tag.'
         );
@@ -2671,7 +2750,7 @@ function Public() {
 
       setP(pet);
     })();
-  }, [code]);
+  }, [code, navigate]);
 
   if (err) {
     return (

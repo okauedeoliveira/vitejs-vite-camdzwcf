@@ -1002,7 +1002,16 @@ function ConfirmEmail() {
 
 function Shell({ children }) {
   return (
-    <>
+    <div
+      className="app-shell"
+      style={{
+        width: '100%',
+        minHeight: '100vh',
+        background: '#0B0B0B',
+        color: '#FFFFFF',
+        position: 'relative'
+      }}
+    >
       <header
         className="app-header"
         style={{
@@ -1010,12 +1019,9 @@ function Shell({ children }) {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-
           padding: '15px 0 5px',
-
           background: '#0B0B0B',
           color: '#FFFFFF',
-
           borderBottom: '1px solid #1F1F1F'
         }}
       >
@@ -1026,166 +1032,115 @@ function Shell({ children }) {
         className="app-main"
         style={{
           minHeight: '100vh',
-
           paddingBottom: '100px',
-
           background: '#0B0B0B',
-          color: '#FFFFFF'
+          color: '#FFFFFF',
+          width: '100%',
+          overflowX: 'auto',
+          overflowY: 'visible'
         }}
       >
         {children}
+
+        <div
+          style={{
+            position: 'fixed',
+            left: '0',
+            right: '0',
+            bottom: '16px',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 9999,
+            pointerEvents: 'none'
+          }}
+        >
+          <nav
+            className="bottom-nav"
+            style={{
+              width: '360px',
+              minWidth: '320px',
+              height: '55px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '5px 8px',
+              margin: '0',
+              background: '#151515',
+              border: '1px solid #2A2A2A',
+              borderRadius: '18px',
+              boxShadow: '0 8px 25px rgba(0, 0, 0, 0.45)',
+              boxSizing: 'border-box',
+              pointerEvents: 'auto'
+            }}
+          >
+            <Link
+              to="/pets"
+              style={{
+                color: '#FFFFFF',
+                textDecoration: 'none',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '2px',
+                fontSize: '11px',
+                fontWeight: '600',
+                whiteSpace: 'nowrap',
+                flex: '1 1 0',
+                textAlign: 'center'
+              }}
+            >
+              <span style={{ fontSize: '20px' }}>🐾</span>
+              <span>Meus Pets</span>
+            </Link>
+
+            <Link
+              to="/pets/novo"
+              style={{
+                color: '#FFFFFF',
+                textDecoration: 'none',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '2px',
+                fontSize: '11px',
+                fontWeight: '600',
+                whiteSpace: 'nowrap',
+                flex: '1 1 0',
+                textAlign: 'center'
+              }}
+            >
+              <span style={{ fontSize: '20px' }}>➕</span>
+              <span>Cadastrar Pet</span>
+            </Link>
+
+            <Link
+              to="/perfil"
+              style={{
+                color: '#FFFFFF',
+                textDecoration: 'none',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '2px',
+                fontSize: '11px',
+                fontWeight: '600',
+                whiteSpace: 'nowrap',
+                flex: '1 1 0',
+                textAlign: 'center'
+              }}
+            >
+              <span style={{ fontSize: '20px' }}>👤</span>
+              <span>Perfil</span>
+            </Link>
+          </nav>
+        </div>
       </main>
-
-      <nav
-        className="bottom-nav"
-        style={{
-          position: 'fixed',
-          left: '50%',
-          bottom: '16px',
-          transform: 'translateX(-50%)',
-
-          width: 'min(75%, 380px)',
-          minHeight: '55px',
-
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-around',
-
-          padding: '5px 8px',
-
-          /* FUNDO DA NAVEGAÇÃO */
-          background: '#151515',
-
-          /* BORDA */
-          border: '1px solid #2A2A2A',
-          borderRadius: '18px',
-
-          /* SOMBRA */
-          boxShadow:
-            '0 8px 25px rgba(0, 0, 0, 0.45)',
-
-          zIndex: 9999
-        }}
-      >
-        <NavLink
-          to="/pets"
-          className={({ isActive }) =>
-            'bottom-nav-item' +
-            (isActive ? ' active' : '')
-          }
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-
-            gap: '2px',
-            padding: '5px 4px',
-
-            textDecoration: 'none',
-
-            /* COR PADRÃO */
-            color: '#A0A0A0',
-
-            borderRadius: '12px',
-
-            fontSize: '11px',
-            fontWeight: '600'
-          }}
-        >
-          <span
-            className="bottom-nav-icon"
-            style={{
-              fontSize: '19px',
-              lineHeight: '1'
-            }}
-          >
-            🐾
-          </span>
-
-          <span>Meus Pets</span>
-        </NavLink>
-
-        <NavLink
-          to="/pets/novo"
-          className={({ isActive }) =>
-            'bottom-nav-item' +
-            (isActive ? ' active' : '')
-          }
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-
-            gap: '2px',
-            padding: '5px 4px',
-
-            textDecoration: 'none',
-
-            color: '#A0A0A0',
-
-            borderRadius: '12px',
-
-            fontSize: '11px',
-            fontWeight: '600'
-          }}
-        >
-          <span
-            className="bottom-nav-icon"
-            style={{
-              fontSize: '19px',
-              lineHeight: '1'
-            }}
-          >
-            ＋
-          </span>
-
-          <span>Cadastrar Pet</span>
-        </NavLink>
-
-        <NavLink
-          to="/perfil"
-          className={({ isActive }) =>
-            'bottom-nav-item' +
-            (isActive ? ' active' : '')
-          }
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-
-            gap: '2px',
-            padding: '5px 4px',
-
-            textDecoration: 'none',
-
-            color: '#A0A0A0',
-
-            borderRadius: '12px',
-
-            fontSize: '11px',
-            fontWeight: '600'
-          }}
-        >
-          <span
-            className="bottom-nav-icon"
-            style={{
-              fontSize: '19px',
-              lineHeight: '1'
-            }}
-          >
-            👤
-          </span>
-
-          <span>Perfil</span>
-        </NavLink>
-      </nav>
-    </>
+    </div>
   );
 }
 

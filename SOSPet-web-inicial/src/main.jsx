@@ -2611,7 +2611,7 @@ function Profile({ onOut }) {
 
             <small className="field-help">
               O e-mail da conta não
-              pode ser alterado aqui.
+              pode ser alterado.
             </small>
           </label>
 

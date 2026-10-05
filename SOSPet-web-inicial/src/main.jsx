@@ -1086,10 +1086,23 @@ function Shell({ children }) {
           color: '#FFFFFF',
           width: '100%',
           overflowX: 'auto',
-          overflowY: 'visible'
+          overflowY: 'visible',
+          display: 'block'
         }}
       >
-        {children}
+        <div
+          style={{
+            width: 'max-content',
+            minWidth: '100%',
+            minHeight: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            boxSizing: 'border-box'
+          }}
+        >
+          {children}
+        </div>
       </main>
 
       <div

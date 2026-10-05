@@ -1212,9 +1212,12 @@ function Shell({ children }) {
 ========================= */
 
 function Pets() {
-
   const [pets, setPets] = useState([]);
   const [loading, setL] = useState(true);
+
+  const [minGridWidth, setMinGridWidth] = useState(() => {
+    return Math.max(window.innerWidth - 32, 320);
+  });
 
   async function loadPets() {
     setL(true);
@@ -1234,6 +1237,20 @@ function Pets() {
     loadPets();
   }, []);
 
+  useEffect(() => {
+    function updateInitialWidth() {
+      setMinGridWidth(prev =>
+        Math.max(prev, window.innerWidth - 32, 320)
+      );
+    }
+
+    window.addEventListener('resize', updateInitialWidth);
+
+    return () => {
+      window.removeEventListener('resize', updateInitialWidth);
+    };
+  }, []);
+
   return (
     <div
       className="container"
@@ -1249,8 +1266,8 @@ function Pets() {
 
       <div
         style={{
-          width: 'max(100%, 948px)',
-          minWidth: '948px',
+          width: `max(100%, ${minGridWidth}px)`,
+          minWidth: `${minGridWidth}px`,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -1263,17 +1280,19 @@ function Pets() {
         <div
           className="head"
           style={{
-            width: '100%',
-            maxWidth: '900px',
+            width: `min(900px, calc(100% - 32px))`,
+            minWidth: `min(900px, calc(100% - 32px))`,
             margin: '0 auto 28px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: '20px',
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
+            boxSizing: 'border-box'
           }}
         >
           <div>
+
             <small
               style={{
                 color: '#777777',
@@ -1295,6 +1314,7 @@ function Pets() {
             >
               Meus Pets
             </h1>
+
           </div>
 
           <Link
@@ -1317,6 +1337,7 @@ function Pets() {
           >
             + Cadastrar pet
           </Link>
+
         </div>
 
         {/* CARREGANDO */}
@@ -1325,12 +1346,12 @@ function Pets() {
 
           <div
             style={{
-              width: '100%',
-              maxWidth: '900px',
+              width: `min(900px, calc(100% - 32px))`,
               margin: '0 auto',
               color: '#777777',
               textAlign: 'center',
-              padding: '40px 0'
+              padding: '40px 0',
+              boxSizing: 'border-box'
             }}
           >
             Carregando...
@@ -1343,8 +1364,8 @@ function Pets() {
           <div
             className="grid"
             style={{
-              width: '900px',
-              minWidth: '900px',
+              width: `min(900px, calc(100% - 32px))`,
+              minWidth: `min(900px, calc(100% - 32px))`,
               maxWidth: '900px',
               margin: '0 auto',
               display: 'grid',
@@ -1354,6 +1375,7 @@ function Pets() {
               boxSizing: 'border-box'
             }}
           >
+
             {pets.map(p => (
 
               <Link
@@ -1394,6 +1416,7 @@ function Pets() {
                   }}
                 >
                   {p.foto_url ? (
+
                     <img
                       src={p.foto_url}
                       alt={p.nome}
@@ -1404,7 +1427,9 @@ function Pets() {
                         display: 'block'
                       }}
                     />
+
                   ) : (
+
                     <span
                       style={{
                         fontSize: '32px'
@@ -1412,6 +1437,7 @@ function Pets() {
                     >
                       🐾
                     </span>
+
                   )}
                 </div>
 
@@ -1423,6 +1449,7 @@ function Pets() {
                     flex: 1
                   }}
                 >
+
                   <h3
                     style={{
                       margin: '0 0 5px',
@@ -1443,8 +1470,7 @@ function Pets() {
                       lineHeight: '1.4'
                     }}
                   >
-                    {p.raca ||
-                      'Raça não informada'}{' '}
+                    {p.raca || 'Raça não informada'}{' '}
                     · {p.sexo || ''}
                   </p>
 
@@ -1485,11 +1511,13 @@ function Pets() {
                   >
                     {p.status}
                   </b>
+
                 </div>
 
               </Link>
 
             ))}
+
           </div>
 
         ) : (
@@ -1499,8 +1527,7 @@ function Pets() {
           <div
             className="empty"
             style={{
-              width: '100%',
-              maxWidth: '500px',
+              width: 'min(500px, calc(100% - 32px))',
               margin: '60px auto',
               padding: '30px 20px',
               boxSizing: 'border-box',
@@ -1510,6 +1537,7 @@ function Pets() {
               textAlign: 'center'
             }}
           >
+
             <h2
               style={{
                 margin: '0 0 10px',
@@ -1549,6 +1577,7 @@ function Pets() {
             >
               Cadastrar pet
             </Link>
+
           </div>
 
         )}
@@ -1585,6 +1614,13 @@ function NewPet() {
 
   const [file, setFile] = useState();
   const [err, setErr] = useState('');
+
+  const [initialFormWidth, setInitialFormWidth] = useState(() => {
+    return Math.min(
+      600,
+      Math.max(window.innerWidth - 32, 320)
+    );
+  });
 
   const set = (k, v) =>
     setF(x => ({
@@ -1719,6 +1755,35 @@ function NewPet() {
     nav('/pets');
   }
 
+  useEffect(() => {
+    function updateInitialWidth() {
+      setInitialFormWidth(prev =>
+        Math.max(
+          prev,
+          Math.min(
+            600,
+            Math.max(window.innerWidth - 32, 320)
+          )
+        )
+      );
+    }
+
+    window.addEventListener(
+      'resize',
+      updateInitialWidth
+    );
+
+    return () => {
+      window.removeEventListener(
+        'resize',
+        updateInitialWidth
+      );
+    };
+  }, []);
+
+  const formWidth = `${initialFormWidth}px`;
+  const wrapperWidth = `${initialFormWidth + 32}px`;
+
   return (
     <div
       className="container narrow"
@@ -1732,8 +1797,8 @@ function NewPet() {
     >
       <div
         style={{
-          width: 'max(100%, 648px)',
-          minWidth: '648px',
+          width: `max(100%, ${wrapperWidth})`,
+          minWidth: wrapperWidth,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -1742,9 +1807,9 @@ function NewPet() {
       >
         <div
           style={{
-            width: '600px',
-            minWidth: '600px',
-            maxWidth: '600px'
+            width: formWidth,
+            minWidth: formWidth,
+            maxWidth: formWidth
           }}
         >
           <Link to="/pets">
@@ -1759,9 +1824,9 @@ function NewPet() {
             className="form"
             onSubmit={go}
             style={{
-              width: '600px',
-              minWidth: '600px',
-              maxWidth: '600px',
+              width: formWidth,
+              minWidth: formWidth,
+              maxWidth: formWidth,
               margin: '0',
               boxSizing: 'border-box'
             }}
@@ -2525,6 +2590,14 @@ function Profile({ onOut }) {
   const [saved, setSaved] =
     useState(false);
 
+  const [initialProfileWidth, setInitialProfileWidth] =
+    useState(() => {
+      return Math.min(
+        600,
+        Math.max(window.innerWidth - 32, 320)
+      );
+    });
+
   useEffect(() => {
     async function load() {
       const {
@@ -2563,6 +2636,32 @@ function Profile({ onOut }) {
     }
 
     load();
+  }, []);
+
+  useEffect(() => {
+    function updateInitialWidth() {
+      setInitialProfileWidth(prev =>
+        Math.max(
+          prev,
+          Math.min(
+            600,
+            Math.max(window.innerWidth - 32, 320)
+          )
+        )
+      );
+    }
+
+    window.addEventListener(
+      'resize',
+      updateInitialWidth
+    );
+
+    return () => {
+      window.removeEventListener(
+        'resize',
+        updateInitialWidth
+      );
+    };
   }, []);
 
   function updateField(
@@ -2624,19 +2723,43 @@ function Profile({ onOut }) {
     }
   }
 
+  const profileWidth =
+    `${initialProfileWidth}px`;
+
+  const wrapperWidth =
+    `${initialProfileWidth + 32}px`;
+
   if (loading) {
     return (
       <div
         className="container"
         style={{
-          width: '800px',
-          minWidth: '800px',
-          maxWidth: 'none',
+          width: '100%',
+          maxWidth: '800px',
           margin: '0 auto',
+          padding: '48px 0 24px',
           boxSizing: 'border-box'
         }}
       >
-        Carregando perfil...
+        <div
+          style={{
+            width: `max(100%, ${wrapperWidth})`,
+            minWidth: wrapperWidth,
+            display: 'flex',
+            justifyContent: 'center',
+            boxSizing: 'border-box'
+          }}
+        >
+          <div
+            style={{
+              width: profileWidth,
+              minWidth: profileWidth,
+              maxWidth: profileWidth
+            }}
+          >
+            Carregando perfil...
+          </div>
+        </div>
       </div>
     );
   }
@@ -2645,9 +2768,8 @@ function Profile({ onOut }) {
     <div
       className="profile-page"
       style={{
-        width: '800px',
-        minWidth: '800px',
-        maxWidth: 'none',
+        width: '100%',
+        maxWidth: '800px',
         margin: '0 auto',
         padding: '48px 0 24px',
         boxSizing: 'border-box',
@@ -2657,147 +2779,158 @@ function Profile({ onOut }) {
       }}
     >
       <div
-        className="profile-header"
         style={{
-          width: '600px',
-          minWidth: '600px',
-          maxWidth: 'none'
+          width: `max(100%, ${wrapperWidth})`,
+          minWidth: wrapperWidth,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          boxSizing: 'border-box'
         }}
       >
-        <div>
-          <h1>Meu perfil</h1>
-
-          <p>
-            Gerencie seus dados pessoais.
-          </p>
-        </div>
-      </div>
-
-      <div
-        className="profile-card"
-        style={{
-          width: '600px',
-          minWidth: '600px',
-          maxWidth: 'none',
-          marginLeft: 'auto',
-          marginRight: 'auto'
-        }}
-      >
-        <div className="profile-section-title">
+        <div
+          className="profile-header"
+          style={{
+            width: profileWidth,
+            minWidth: profileWidth,
+            maxWidth: profileWidth
+          }}
+        >
           <div>
-            <h2>
-              Dados pessoais
-            </h2>
+            <h1>Meu perfil</h1>
 
             <p>
-              Mantenha suas informações
-              atualizadas.
+              Gerencie seus dados pessoais.
             </p>
           </div>
         </div>
 
-        <form
-          className="form profile-form"
-          onSubmit={save}
+        <div
+          className="profile-card"
           style={{
-            width: '600px',
-            minWidth: '600px',
-            maxWidth: 'none',
+            width: profileWidth,
+            minWidth: profileWidth,
+            maxWidth: profileWidth,
             marginLeft: 'auto',
-            marginRight: 'auto',
-            boxSizing: 'border-box'
+            marginRight: 'auto'
           }}
         >
-          <label>
-            Nome completo
+          <div className="profile-section-title">
+            <div>
+              <h2>
+                Dados pessoais
+              </h2>
 
-            <input
-              required
-              value={p.nome}
-              disabled={!editing}
-              onChange={e =>
-                updateField(
-                  'nome',
-                  e.target.value
-                )
-              }
-            />
-          </label>
-
-          <label>
-            WhatsApp / Telefone
-
-            <input
-              type="tel"
-              required
-              value={p.telefone}
-              disabled={!editing}
-              onChange={e =>
-                updateField(
-                  'telefone',
-                  e.target.value
-                )
-              }
-              placeholder="(13) 99999-9999"
-            />
-          </label>
-
-          <label>
-            E-mail
-
-            <input
-              type="email"
-              value={p.email}
-              disabled
-            />
-
-            <small className="field-help">
-              O e-mail da conta não
-              pode ser alterado.
-            </small>
-          </label>
-
-          {saved && (
-            <div className="success-message">
-              ✓ Dados salvos com sucesso.
+              <p>
+                Mantenha suas informações
+                atualizadas.
+              </p>
             </div>
-          )}
+          </div>
 
-          {!editing && (
-            <button
-              type="button"
-              className="primary"
-              onClick={startEditing}
-            >
-              Editar informações
-            </button>
-          )}
+          <form
+            className="form profile-form"
+            onSubmit={save}
+            style={{
+              width: profileWidth,
+              minWidth: profileWidth,
+              maxWidth: profileWidth,
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              boxSizing: 'border-box'
+            }}
+          >
+            <label>
+              Nome completo
 
-          {editing && changed && (
-            <button
-              type="submit"
-              className="primary"
-              disabled={saving}
-            >
-              {saving
-                ? 'Salvando...'
-                : 'Salvar alterações'}
-            </button>
-          )}
-        </form>
+              <input
+                required
+                value={p.nome}
+                disabled={!editing}
+                onChange={e =>
+                  updateField(
+                    'nome',
+                    e.target.value
+                  )
+                }
+              />
+            </label>
+
+            <label>
+              WhatsApp / Telefone
+
+              <input
+                type="tel"
+                required
+                value={p.telefone}
+                disabled={!editing}
+                onChange={e =>
+                  updateField(
+                    'telefone',
+                    e.target.value
+                  )
+                }
+                placeholder="(13) 99999-9999"
+              />
+            </label>
+
+            <label>
+              E-mail
+
+              <input
+                type="email"
+                value={p.email}
+                disabled
+              />
+
+              <small className="field-help">
+                O e-mail da conta não
+                pode ser alterado.
+              </small>
+            </label>
+
+            {saved && (
+              <div className="success-message">
+                ✓ Dados salvos com sucesso.
+              </div>
+            )}
+
+            {!editing && (
+              <button
+                type="button"
+                className="primary"
+                onClick={startEditing}
+              >
+                Editar informações
+              </button>
+            )}
+
+            {editing && changed && (
+              <button
+                type="submit"
+                className="primary"
+                disabled={saving}
+              >
+                {saving
+                  ? 'Salvando...'
+                  : 'Salvar alterações'}
+              </button>
+            )}
+          </form>
+        </div>
+
+        <button
+          type="button"
+          className="secondary btn"
+          onClick={onOut}
+          style={{
+            marginLeft: 'auto',
+            marginRight: 'auto'
+          }}
+        >
+          Sair da conta
+        </button>
       </div>
-
-      <button
-        type="button"
-        className="secondary btn"
-        onClick={onOut}
-        style={{
-          marginLeft: 'auto',
-          marginRight: 'auto'
-        }}
-      >
-        Sair da conta
-      </button>
     </div>
   );
 }

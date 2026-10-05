@@ -1001,6 +1001,55 @@ function ConfirmEmail() {
 ========================= */
 
 function Shell({ children }) {
+  useEffect(() => {
+    const main = document.querySelector('.app-main');
+    const menu = document.querySelector('.bottom-nav-wrapper');
+
+    if (!main || !menu) return;
+
+    function updateMenuPosition() {
+      const rect = main.getBoundingClientRect();
+
+      const contentWidth = Math.max(
+        main.scrollWidth,
+        main.clientWidth
+      );
+
+      const center =
+        rect.left +
+        contentWidth / 2 -
+        main.scrollLeft;
+
+      menu.style.left = `${center}px`;
+      menu.style.transform = 'translateX(-50%)';
+    }
+
+    updateMenuPosition();
+
+    main.addEventListener(
+      'scroll',
+      updateMenuPosition,
+      { passive: true }
+    );
+
+    window.addEventListener(
+      'resize',
+      updateMenuPosition
+    );
+
+    return () => {
+      main.removeEventListener(
+        'scroll',
+        updateMenuPosition
+      );
+
+      window.removeEventListener(
+        'resize',
+        updateMenuPosition
+      );
+    };
+  }, []);
+
   return (
     <div
       className="app-shell"
@@ -1041,105 +1090,119 @@ function Shell({ children }) {
         }}
       >
         {children}
+      </main>
 
-        <div
+      <div
+        className="bottom-nav-wrapper"
+        style={{
+          position: 'fixed',
+          bottom: '16px',
+          left: '50%',
+          width: '360px',
+          minWidth: '320px',
+          height: '55px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 9999,
+          pointerEvents: 'none',
+          boxSizing: 'border-box'
+        }}
+      >
+        <nav
+          className="bottom-nav"
           style={{
-            position: 'fixed',
-            left: '0',
-            right: '0',
-            bottom: '16px',
-            width: '100%',
+            width: '360px',
+            minWidth: '320px',
+            height: '55px',
             display: 'flex',
-            justifyContent: 'center',
             alignItems: 'center',
-            zIndex: 9999,
-            pointerEvents: 'none'
+            justifyContent: 'center',
+            padding: '5px 8px',
+            margin: '0',
+            background: '#151515',
+            border: '1px solid #2A2A2A',
+            borderRadius: '18px',
+            boxShadow:
+              '0 8px 25px rgba(0, 0, 0, 0.45)',
+            boxSizing: 'border-box',
+            pointerEvents: 'auto',
+            flexShrink: 0
           }}
         >
-          <nav
-            className="bottom-nav"
+          <Link
+            to="/pets"
             style={{
-              width: '360px',
-              minWidth: '320px',
-              height: '55px',
+              color: '#FFFFFF',
+              textDecoration: 'none',
               display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '5px 8px',
-              margin: '0',
-              background: '#151515',
-              border: '1px solid #2A2A2A',
-              borderRadius: '18px',
-              boxShadow: '0 8px 25px rgba(0, 0, 0, 0.45)',
-              boxSizing: 'border-box',
-              pointerEvents: 'auto'
+              gap: '2px',
+              fontSize: '11px',
+              fontWeight: '600',
+              whiteSpace: 'nowrap',
+              flex: '1 1 0',
+              minWidth: '0',
+              textAlign: 'center'
             }}
           >
-            <Link
-              to="/pets"
-              style={{
-                color: '#FFFFFF',
-                textDecoration: 'none',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '2px',
-                fontSize: '11px',
-                fontWeight: '600',
-                whiteSpace: 'nowrap',
-                flex: '1 1 0',
-                textAlign: 'center'
-              }}
-            >
-              <span style={{ fontSize: '20px' }}>🐾</span>
-              <span>Meus Pets</span>
-            </Link>
+            <span style={{ fontSize: '20px' }}>
+              🐾
+            </span>
+            <span>Meus Pets</span>
+          </Link>
 
-            <Link
-              to="/pets/novo"
-              style={{
-                color: '#FFFFFF',
-                textDecoration: 'none',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '2px',
-                fontSize: '11px',
-                fontWeight: '600',
-                whiteSpace: 'nowrap',
-                flex: '1 1 0',
-                textAlign: 'center'
-              }}
-            >
-              <span style={{ fontSize: '20px' }}>➕</span>
-              <span>Cadastrar Pet</span>
-            </Link>
+          <Link
+            to="/pets/novo"
+            style={{
+              color: '#FFFFFF',
+              textDecoration: 'none',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '2px',
+              fontSize: '11px',
+              fontWeight: '600',
+              whiteSpace: 'nowrap',
+              flex: '1 1 0',
+              minWidth: '0',
+              textAlign: 'center'
+            }}
+          >
+            <span style={{ fontSize: '20px' }}>
+              ➕
+            </span>
+            <span>Cadastrar Pet</span>
+          </Link>
 
-            <Link
-              to="/perfil"
-              style={{
-                color: '#FFFFFF',
-                textDecoration: 'none',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '2px',
-                fontSize: '11px',
-                fontWeight: '600',
-                whiteSpace: 'nowrap',
-                flex: '1 1 0',
-                textAlign: 'center'
-              }}
-            >
-              <span style={{ fontSize: '20px' }}>👤</span>
-              <span>Perfil</span>
-            </Link>
-          </nav>
-        </div>
-      </main>
+          <Link
+            to="/perfil"
+            style={{
+              color: '#FFFFFF',
+              textDecoration: 'none',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '2px',
+              fontSize: '11px',
+              fontWeight: '600',
+              whiteSpace: 'nowrap',
+              flex: '1 1 0',
+              minWidth: '0',
+              textAlign: 'center'
+            }}
+          >
+            <span style={{ fontSize: '20px' }}>
+              👤
+            </span>
+            <span>Perfil</span>
+          </Link>
+        </nav>
+      </div>
     </div>
   );
 }
@@ -1149,6 +1212,7 @@ function Shell({ children }) {
 ========================= */
 
 function Pets() {
+
   const [pets, setPets] = useState([]);
   const [loading, setL] = useState(true);
 
@@ -1178,298 +1242,318 @@ function Pets() {
         width: '100%',
         background: '#0B0B0B',
         color: '#FFFFFF',
-        padding: '30px 20px 120px',
+        padding: '30px 0 120px',
         boxSizing: 'border-box'
       }}
     >
 
-      {/* CABEÇALHO */}
-
       <div
-        className="head"
         style={{
-          width: '100%',
-          maxWidth: '900px',
-          margin: '0 auto 28px',
+          width: 'max(100%, 948px)',
+          minWidth: '948px',
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '20px',
-          flexWrap: 'wrap'
+          boxSizing: 'border-box'
         }}
       >
-        <div>
-          <small
-            style={{
-              color: '#777777',
-              fontSize: '11px',
-              fontWeight: '700',
-              letterSpacing: '1px'
-            }}
-          >
-            ÁREA DO TUTOR
-          </small>
 
-          <h1
-            style={{
-              margin: '6px 0 0',
-              color: '#B8B8B8',
-              fontSize: '30px',
-              fontWeight: '700'
-            }}
-          >
-            Meus Pets
-          </h1>
-        </div>
+        {/* CABEÇALHO */}
 
-        <Link
-          className="primary btn"
-          to="/pets/novo"
+        <div
+          className="head"
           style={{
+            width: '100%',
+            maxWidth: '900px',
+            margin: '0 auto 28px',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: '46px',
-            padding: '0 18px',
-            background: '#FFFFFF',
-            color: '#0B0B0B',
-            borderRadius: '12px',
-            textDecoration: 'none',
-            fontSize: '14px',
-            fontWeight: '700',
-            boxSizing: 'border-box'
+            justifyContent: 'space-between',
+            gap: '20px',
+            flexWrap: 'wrap'
           }}
         >
-          + Cadastrar pet
-        </Link>
-      </div>
-
-      {/* CARREGANDO */}
-
-      {loading ? (
-        <div
-          style={{
-            width: '100%',
-            maxWidth: '900px',
-            margin: '0 auto',
-            color: '#777777',
-            textAlign: 'center',
-            padding: '40px 0'
-          }}
-        >
-          Carregando...
-        </div>
-      ) : pets.length ? (
-
-        /* LISTA DE PETS */
-
-        <div
-          className="grid"
-          style={{
-            width: '100%',
-            maxWidth: '900px',
-            margin: '0 auto',
-            display: 'grid',
-            gridTemplateColumns:
-              'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '16px'
-          }}
-        >
-          {pets.map(p => (
-            <Link
-              className="pet"
-              key={p.id}
-              to={'/pets/' + p.id}
+          <div>
+            <small
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '16px',
-                width: '100%',
-                padding: '16px',
-                boxSizing: 'border-box',
-                background: '#151515',
-                border: '1px solid #2A2A2A',
-                borderRadius: '18px',
-                textDecoration: 'none',
-                color: '#FFFFFF',
-                transition: 'border-color 0.2s ease'
+                color: '#777777',
+                fontSize: '11px',
+                fontWeight: '700',
+                letterSpacing: '1px'
               }}
             >
+              ÁREA DO TUTOR
+            </small>
 
-              {/* FOTO */}
-
-              <div
-                className="photo"
-                style={{
-                  width: '82px',
-                  height: '82px',
-                  minWidth: '82px',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  background: '#222222',
-                  border: '1px solid #333333',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                {p.foto_url ? (
-                  <img
-                    src={p.foto_url}
-                    alt={p.nome}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      display: 'block'
-                    }}
-                  />
-                ) : (
-                  <span
-                    style={{
-                      fontSize: '32px'
-                    }}
-                  >
-                    🐾
-                  </span>
-                )}
-              </div>
-
-              {/* INFORMAÇÕES */}
-
-              <div
-                style={{
-                  minWidth: 0,
-                  flex: 1
-                }}
-              >
-                <h3
-                  style={{
-                    margin: '0 0 5px',
-                    color: '#B8B8B8',
-                    fontSize: '20px',
-                    fontWeight: '700',
-                    lineHeight: '1.2'
-                  }}
-                >
-                  {p.nome}
-                </h3>
-
-                <p
-                  style={{
-                    margin: '0 0 9px',
-                    color: '#777777',
-                    fontSize: '13px',
-                    lineHeight: '1.4'
-                  }}
-                >
-                  {p.raca ||
-                    'Raça não informada'}{' '}
-                  · {p.sexo || ''}
-                </p>
-
-                <b
-                  className={
-                    p.status === 'Perdido'
-                      ? 'lost'
-                      : p.status === 'Encontrado'
-                      ? 'found'
-                      : ''
-                  }
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    padding: '5px 9px',
-                    borderRadius: '8px',
-                    background:
-                      p.status === 'Perdido'
-                        ? '#3A1111'
-                        : p.status === 'Encontrado'
-                        ? '#102A18'
-                        : '#222222',
-                    border:
-                      p.status === 'Perdido'
-                        ? '1px solid #6B2020'
-                        : p.status === 'Encontrado'
-                        ? '1px solid #245A35'
-                        : '1px solid #333333',
-                    color:
-                      p.status === 'Perdido'
-                        ? '#FF7777'
-                        : p.status === 'Encontrado'
-                        ? '#65D98A'
-                        : '#999999',
-                    fontSize: '11px',
-                    fontWeight: '700'
-                  }}
-                >
-                  {p.status}
-                </b>
-              </div>
-
-            </Link>
-          ))}
-        </div>
-
-      ) : (
-
-        /* NENHUM PET */
-
-        <div
-          className="empty"
-          style={{
-            width: '100%',
-            maxWidth: '500px',
-            margin: '60px auto',
-            padding: '30px 20px',
-            boxSizing: 'border-box',
-            background: '#151515',
-            border: '1px solid #2A2A2A',
-            borderRadius: '20px',
-            textAlign: 'center'
-          }}
-        >
-          <h2
-            style={{
-              margin: '0 0 10px',
-              color: '#B8B8B8',
-              fontSize: '22px'
-            }}
-          >
-            Nenhum pet cadastrado
-          </h2>
-
-          <p
-            style={{
-              margin: '0 0 22px',
-              color: '#777777',
-              fontSize: '14px'
-            }}
-          >
-            Cadastre seu primeiro pet.
-          </p>
+            <h1
+              style={{
+                margin: '6px 0 0',
+                color: '#B8B8B8',
+                fontSize: '30px',
+                fontWeight: '700'
+              }}
+            >
+              Meus Pets
+            </h1>
+          </div>
 
           <Link
             className="primary btn"
             to="/pets/novo"
             style={{
-              display: 'inline-flex',
+              display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               minHeight: '46px',
-              padding: '0 20px',
+              padding: '0 18px',
               background: '#FFFFFF',
               color: '#0B0B0B',
               borderRadius: '12px',
               textDecoration: 'none',
               fontSize: '14px',
-              fontWeight: '700'
+              fontWeight: '700',
+              boxSizing: 'border-box'
             }}
           >
-            Cadastrar pet
+            + Cadastrar pet
           </Link>
         </div>
-      )}
+
+        {/* CARREGANDO */}
+
+        {loading ? (
+
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '900px',
+              margin: '0 auto',
+              color: '#777777',
+              textAlign: 'center',
+              padding: '40px 0'
+            }}
+          >
+            Carregando...
+          </div>
+
+        ) : pets.length ? (
+
+          /* LISTA DE PETS */
+
+          <div
+            className="grid"
+            style={{
+              width: '900px',
+              minWidth: '900px',
+              maxWidth: '900px',
+              margin: '0 auto',
+              display: 'grid',
+              gridTemplateColumns:
+                'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '16px',
+              boxSizing: 'border-box'
+            }}
+          >
+            {pets.map(p => (
+
+              <Link
+                className="pet"
+                key={p.id}
+                to={'/pets/' + p.id}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '16px',
+                  width: '100%',
+                  padding: '16px',
+                  boxSizing: 'border-box',
+                  background: '#151515',
+                  border: '1px solid #2A2A2A',
+                  borderRadius: '18px',
+                  textDecoration: 'none',
+                  color: '#FFFFFF',
+                  transition: 'border-color 0.2s ease'
+                }}
+              >
+
+                {/* FOTO */}
+
+                <div
+                  className="photo"
+                  style={{
+                    width: '82px',
+                    height: '82px',
+                    minWidth: '82px',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    background: '#222222',
+                    border: '1px solid #333333',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  {p.foto_url ? (
+                    <img
+                      src={p.foto_url}
+                      alt={p.nome}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        display: 'block'
+                      }}
+                    />
+                  ) : (
+                    <span
+                      style={{
+                        fontSize: '32px'
+                      }}
+                    >
+                      🐾
+                    </span>
+                  )}
+                </div>
+
+                {/* INFORMAÇÕES */}
+
+                <div
+                  style={{
+                    minWidth: 0,
+                    flex: 1
+                  }}
+                >
+                  <h3
+                    style={{
+                      margin: '0 0 5px',
+                      color: '#B8B8B8',
+                      fontSize: '20px',
+                      fontWeight: '700',
+                      lineHeight: '1.2'
+                    }}
+                  >
+                    {p.nome}
+                  </h3>
+
+                  <p
+                    style={{
+                      margin: '0 0 9px',
+                      color: '#777777',
+                      fontSize: '13px',
+                      lineHeight: '1.4'
+                    }}
+                  >
+                    {p.raca ||
+                      'Raça não informada'}{' '}
+                    · {p.sexo || ''}
+                  </p>
+
+                  <b
+                    className={
+                      p.status === 'Perdido'
+                        ? 'lost'
+                        : p.status === 'Encontrado'
+                        ? 'found'
+                        : ''
+                    }
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '5px 9px',
+                      borderRadius: '8px',
+                      background:
+                        p.status === 'Perdido'
+                          ? '#3A1111'
+                          : p.status === 'Encontrado'
+                          ? '#102A18'
+                          : '#222222',
+                      border:
+                        p.status === 'Perdido'
+                          ? '1px solid #6B2020'
+                          : p.status === 'Encontrado'
+                          ? '1px solid #245A35'
+                          : '1px solid #333333',
+                      color:
+                        p.status === 'Perdido'
+                          ? '#FF7777'
+                          : p.status === 'Encontrado'
+                          ? '#65D98A'
+                          : '#999999',
+                      fontSize: '11px',
+                      fontWeight: '700'
+                    }}
+                  >
+                    {p.status}
+                  </b>
+                </div>
+
+              </Link>
+
+            ))}
+          </div>
+
+        ) : (
+
+          /* NENHUM PET */
+
+          <div
+            className="empty"
+            style={{
+              width: '100%',
+              maxWidth: '500px',
+              margin: '60px auto',
+              padding: '30px 20px',
+              boxSizing: 'border-box',
+              background: '#151515',
+              border: '1px solid #2A2A2A',
+              borderRadius: '20px',
+              textAlign: 'center'
+            }}
+          >
+            <h2
+              style={{
+                margin: '0 0 10px',
+                color: '#B8B8B8',
+                fontSize: '22px'
+              }}
+            >
+              Nenhum pet cadastrado
+            </h2>
+
+            <p
+              style={{
+                margin: '0 0 22px',
+                color: '#777777',
+                fontSize: '14px'
+              }}
+            >
+              Cadastre seu primeiro pet.
+            </p>
+
+            <Link
+              className="primary btn"
+              to="/pets/novo"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '46px',
+                padding: '0 20px',
+                background: '#FFFFFF',
+                color: '#0B0B0B',
+                borderRadius: '12px',
+                textDecoration: 'none',
+                fontSize: '14px',
+                fontWeight: '700'
+              }}
+            >
+              Cadastrar pet
+            </Link>
+          </div>
+
+        )}
+
+      </div>
 
     </div>
   );
@@ -1520,25 +1604,48 @@ function NewPet() {
     let tag_id = null;
 
     if (f.tag) {
+      const codigo = f.tag.trim();
+
       const { data, error } = await S
         .from('tags')
         .select('id,ativa')
-        .eq('codigo', f.tag.trim())
+        .eq('codigo', codigo)
         .maybeSingle();
 
-      if (error || !data) {
-        return setErr(
-          'Tag não encontrada.'
-        );
+      if (error) {
+        return setErr(error.message);
       }
 
-      if (data.ativa) {
-        return setErr(
-          'Esta tag já está ativa.'
-        );
-      }
+      if (data) {
+        if (data.ativa) {
+          return setErr(
+            'Esta tag já está ativa.'
+          );
+        }
 
-      tag_id = data.id;
+        tag_id = data.id;
+      } else {
+        const {
+          data: novaTag,
+          error: tagError
+        } = await S
+          .from('tags')
+          .insert({
+            codigo,
+            ativa: false
+          })
+          .select('id')
+          .single();
+
+        if (tagError || !novaTag) {
+          return setErr(
+            tagError?.message ||
+            'Não foi possível cadastrar esta tag.'
+          );
+        }
+
+        tag_id = novaTag.id;
+      }
     }
 
     let foto_url = null;
@@ -1613,148 +1720,182 @@ function NewPet() {
   }
 
   return (
-    <div className="container narrow">
-      <Link to="/pets">
-        ← Voltar
-      </Link>
-
-      <h1>Cadastrar Pet</h1>
-
-      <form
-        className="form"
-        onSubmit={go}
+    <div
+      className="container narrow"
+      style={{
+        width: '100%',
+        maxWidth: '800px',
+        margin: '0 auto',
+        padding: '48px 0 24px',
+        boxSizing: 'border-box'
+      }}
+    >
+      <div
+        style={{
+          width: 'max(100%, 648px)',
+          minWidth: '648px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          boxSizing: 'border-box'
+        }}
       >
-        <label>
-          Nome *
-          <input
-            required
-            value={f.nome}
-            onChange={e =>
-              set('nome', e.target.value)
-            }
-          />
-        </label>
+        <div
+          style={{
+            width: '600px',
+            minWidth: '600px',
+            maxWidth: '600px'
+          }}
+        >
+          <Link to="/pets">
+            ← Voltar
+          </Link>
 
-        <div className="row">
-          <label>
-            Raça
-            <input
-              value={f.raca}
-              onChange={e =>
-                set('raca', e.target.value)
-              }
-            />
-          </label>
+          <h1>
+            Cadastrar Pet
+          </h1>
 
-          <label>
-            Sexo
-            <select
-              value={f.sexo}
-              onChange={e =>
-                set('sexo', e.target.value)
-              }
-            >
-              <option>Macho</option>
-              <option>Fêmea</option>
-            </select>
-          </label>
+          <form
+            className="form"
+            onSubmit={go}
+            style={{
+              width: '600px',
+              minWidth: '600px',
+              maxWidth: '600px',
+              margin: '0',
+              boxSizing: 'border-box'
+            }}
+          >
+            <label>
+              Nome *
+              <input
+                required
+                value={f.nome}
+                onChange={e =>
+                  set('nome', e.target.value)
+                }
+              />
+            </label>
+
+            <div className="row">
+              <label>
+                Raça
+                <input
+                  value={f.raca}
+                  onChange={e =>
+                    set('raca', e.target.value)
+                  }
+                />
+              </label>
+
+              <label>
+                Sexo
+                <select
+                  value={f.sexo}
+                  onChange={e =>
+                    set('sexo', e.target.value)
+                  }
+                >
+                  <option>Macho</option>
+                  <option>Fêmea</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              Características
+              <textarea
+                value={f.caracteristicas}
+                onChange={e =>
+                  set(
+                    'caracteristicas',
+                    e.target.value
+                  )
+                }
+              />
+            </label>
+
+            <div className="row">
+              <label>
+                WhatsApp
+                <input
+                  value={f.whatsapp}
+                  onChange={e =>
+                    set(
+                      'whatsapp',
+                      e.target.value
+                    )
+                  }
+                />
+              </label>
+
+              <label>
+                Cidade
+                <input
+                  value={f.cidade}
+                  onChange={e =>
+                    set('cidade', e.target.value)
+                  }
+                />
+              </label>
+            </div>
+
+            <div className="row">
+              <label>
+                Status
+                <select
+                  value={f.status}
+                  onChange={e =>
+                    set(
+                      'status',
+                      e.target.value
+                    )
+                  }
+                >
+                  <option>Normal</option>
+                  <option>Perdido</option>
+                </select>
+              </label>
+
+              <label>
+                Tag
+                <input
+                  placeholder="RF-00001"
+                  value={f.tag}
+                  readOnly={!!tagFromUrl}
+                  onChange={e =>
+                    set('tag', e.target.value)
+                  }
+                />
+              </label>
+            </div>
+
+            <label>
+              Foto
+              <input
+                type="file"
+                accept="image/*"
+                capture="environment"
+                onChange={e =>
+                  setFile(
+                    e.target.files?.[0]
+                  )
+                }
+              />
+            </label>
+
+            {err && (
+              <div className="err">
+                {err}
+              </div>
+            )}
+
+            <button className="primary">
+              Salvar pet
+            </button>
+          </form>
         </div>
-
-        <label>
-          Características
-          <textarea
-            value={f.caracteristicas}
-            onChange={e =>
-              set(
-                'caracteristicas',
-                e.target.value
-              )
-            }
-          />
-        </label>
-
-        <div className="row">
-          <label>
-            WhatsApp
-            <input
-              value={f.whatsapp}
-              onChange={e =>
-                set(
-                  'whatsapp',
-                  e.target.value
-                )
-              }
-            />
-          </label>
-
-          <label>
-            Cidade
-            <input
-              value={f.cidade}
-              onChange={e =>
-                set(
-                  'cidade',
-                  e.target.value
-                )
-              }
-            />
-          </label>
-        </div>
-
-        <div className="row">
-          <label>
-            Status
-            <select
-              value={f.status}
-              onChange={e =>
-                set(
-                  'status',
-                  e.target.value
-                )
-              }
-            >
-              <option>Normal</option>
-              <option>Perdido</option>
-            </select>
-          </label>
-
-          <label>
-            Tag
-            <input
-              placeholder="RF-00001"
-              value={f.tag}
-              readOnly={!!tagFromUrl}
-              onChange={e =>
-                set('tag', e.target.value)
-              }
-            />
-          </label>
-        </div>
-
-        <label>
-          Foto
-          <input
-            type="file"
-            accept="image/*"
-            capture="environment"
-            onChange={e =>
-              setFile(
-                e.target.files?.[0]
-              )
-            }
-          />
-        </label>
-
-        {err && (
-          <div className="err">
-            {err}
-          </div>
-        )}
-
-        <button className="primary">
-          Salvar pet
-        </button>
-      </form>
+      </div>
     </div>
   );
 }
@@ -2485,15 +2626,44 @@ function Profile({ onOut }) {
 
   if (loading) {
     return (
-      <div className="container">
+      <div
+        className="container"
+        style={{
+          width: '800px',
+          minWidth: '800px',
+          maxWidth: 'none',
+          margin: '0 auto',
+          boxSizing: 'border-box'
+        }}
+      >
         Carregando perfil...
       </div>
     );
   }
 
   return (
-    <div className="profile-page">
-      <div className="profile-header">
+    <div
+      className="profile-page"
+      style={{
+        width: '800px',
+        minWidth: '800px',
+        maxWidth: 'none',
+        margin: '0 auto',
+        padding: '48px 0 24px',
+        boxSizing: 'border-box',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+      }}
+    >
+      <div
+        className="profile-header"
+        style={{
+          width: '600px',
+          minWidth: '600px',
+          maxWidth: 'none'
+        }}
+      >
         <div>
           <h1>Meu perfil</h1>
 
@@ -2503,7 +2673,16 @@ function Profile({ onOut }) {
         </div>
       </div>
 
-      <div className="profile-card">
+      <div
+        className="profile-card"
+        style={{
+          width: '600px',
+          minWidth: '600px',
+          maxWidth: 'none',
+          marginLeft: 'auto',
+          marginRight: 'auto'
+        }}
+      >
         <div className="profile-section-title">
           <div>
             <h2>
@@ -2520,6 +2699,14 @@ function Profile({ onOut }) {
         <form
           className="form profile-form"
           onSubmit={save}
+          style={{
+            width: '600px',
+            minWidth: '600px',
+            maxWidth: 'none',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            boxSizing: 'border-box'
+          }}
         >
           <label>
             Nome completo
@@ -2604,6 +2791,10 @@ function Profile({ onOut }) {
         type="button"
         className="secondary btn"
         onClick={onOut}
+        style={{
+          marginLeft: 'auto',
+          marginRight: 'auto'
+        }}
       >
         Sair da conta
       </button>
